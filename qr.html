@@ -1,0 +1,247 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>सीतापुरा नगर - पंजीकरण</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Noto+Serif+Devanagari:wght@400;600;700;800&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<style>
+  :root {
+    --bhagwa: #FF6B1A;
+    --bhagwa-deep: #E55100;
+    --maroon: #8B1A0E;
+    --gold: #D4A017;
+    --cream: #FFF8E7;
+    --ink: #2B1810;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 20% 0%, rgba(255, 107, 26, 0.25), transparent 50%),
+      radial-gradient(circle at 80% 100%, rgba(212, 160, 23, 0.2), transparent 50%),
+      linear-gradient(180deg, #FFE8C4 0%, #FFD194 50%, #FFA952 100%);
+    font-family: 'Noto Serif Devanagari', serif;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image:
+      repeating-linear-gradient(45deg,
+        rgba(139, 26, 14, 0.04) 0 2px,
+        transparent 2px 18px);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .card {
+    background: linear-gradient(180deg, #FFFEF8 0%, #FFF8E7 100%);
+    border: 3px solid var(--bhagwa);
+    border-radius: 8px;
+    padding: 38px 30px 32px;
+    max-width: 460px;
+    width: 100%;
+    box-shadow:
+      0 0 0 1px var(--gold),
+      0 0 0 8px var(--cream),
+      0 0 0 9px var(--bhagwa),
+      0 30px 60px -15px rgba(139, 26, 14, 0.5);
+    position: relative;
+    text-align: center;
+    z-index: 1;
+  }
+  .card::before, .card::after {
+    content: '✦';
+    position: absolute;
+    color: var(--bhagwa);
+    font-size: 22px;
+    line-height: 1;
+  }
+  .card::before { top: 10px; left: 14px; }
+  .card::after  { top: 10px; right: 14px; }
+
+  .top-band {
+    background: linear-gradient(90deg, var(--bhagwa) 0%, var(--bhagwa-deep) 100%);
+    color: #fff;
+    margin: -38px -30px 22px;
+    padding: 14px 20px 12px;
+    border-radius: 5px 5px 0 0;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    font-size: 15px;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    position: relative;
+  }
+  .top-band::before, .top-band::after {
+    content: '❋';
+    color: var(--gold);
+    margin: 0 12px;
+    opacity: 0.9;
+  }
+
+  .om {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--maroon);
+    font-size: 34px;
+    line-height: 1;
+    margin-bottom: 4px;
+  }
+
+  .ornament {
+    color: var(--bhagwa);
+    letter-spacing: 10px;
+    font-size: 13px;
+    margin-bottom: 10px;
+  }
+
+  h1 {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 800;
+    font-size: 32px;
+    line-height: 1.15;
+    color: var(--maroon);
+    margin-bottom: 4px;
+  }
+  .nagar-name {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 700;
+    font-size: 24px;
+    color: var(--bhagwa-deep);
+    margin-bottom: 4px;
+    letter-spacing: 0.02em;
+  }
+  .subtitle {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--ink);
+    opacity: 0.75;
+    font-size: 15px;
+    margin-bottom: 24px;
+    line-height: 1.5;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 22px;
+    gap: 8px;
+    color: var(--bhagwa);
+    font-size: 12px;
+  }
+  .divider .line {
+    flex: 1;
+    max-width: 80px;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bhagwa), transparent);
+  }
+
+  .qr-frame {
+    display: inline-block;
+    padding: 18px;
+    background: #fff;
+    border: 2px solid var(--bhagwa);
+    border-radius: 4px;
+    margin-bottom: 22px;
+    position: relative;
+    box-shadow: inset 0 0 0 1px var(--gold);
+  }
+  #qrcode img, #qrcode canvas {
+    display: block;
+    margin: 0 auto;
+  }
+
+  .instruction {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 16px;
+    color: var(--maroon);
+    line-height: 1.6;
+    margin-bottom: 18px;
+    padding: 0 8px;
+  }
+  .instruction-en {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 13px;
+    color: var(--ink);
+    opacity: 0.6;
+    font-style: italic;
+    margin-bottom: 8px;
+  }
+
+  .footer-band {
+    margin: 22px -30px -32px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--maroon) 0%, var(--bhagwa-deep) 100%);
+    color: var(--cream);
+    border-radius: 0 0 5px 5px;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 14px;
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .footer-band span {
+    color: var(--gold);
+    margin: 0 8px;
+  }
+
+  @media (max-width: 420px) {
+    .card { padding: 32px 22px 28px; }
+    .top-band { margin: -32px -22px 20px; }
+    .footer-band { margin: 20px -22px -28px; }
+    h1 { font-size: 26px; }
+    .nagar-name { font-size: 20px; }
+  }
+</style>
+</head>
+<body>
+  <div class="card">
+    <div class="top-band">राष्ट्रीय स्वयंसेवक संघ</div>
+
+    <div class="om">ॐ</div>
+    <div class="ornament">✦ ✦ ✦</div>
+
+    <h1>पंजीकरण</h1>
+    <div class="nagar-name">सीतापुरा नगर</div>
+    <p class="subtitle">कृपया QR कोड स्कैन करें</p>
+
+    <div class="divider">
+      <span class="line"></span>
+      <span>❋</span>
+      <span class="line"></span>
+    </div>
+
+    <div class="qr-frame">
+      <div id="qrcode"></div>
+    </div>
+
+    <p class="instruction">अपने मोबाइल कैमरे से<br/>QR कोड स्कैन करें</p>
+    <p class="instruction-en">Scan the QR code with your phone camera</p>
+
+    <div class="footer-band">वन्दे <span>✦</span> मातरम्</div>
+  </div>
+
+<script>
+  const FORM_URL = "https://mayankkhandelwal1991.github.io/rss/registration.html";
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: FORM_URL,
+    width: 260,
+    height: 260,
+    colorDark: "#8B1A0E",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>
