@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>हिंदी अभ्यास — Hindi Practice for Class 3</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Fraunces:opsz,wght@9..144,300;9..144,500;9..144,700;9..144,900&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#f4ead5;
+    --ink:#2a1810;
+    --accent:#c1440e;
+    --leaf:#3a5a40;
+    --gold:#d4a574;
+    --shadow:rgba(42,24,16,.15);
+    --correct:#3a5a40;
+    --wrong:#c1440e;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh}
+  body{
+    font-family:'Fraunces',serif;
+    background:var(--paper);
+    background-image:
+      radial-gradient(circle at 20% 30%, rgba(212,165,116,.18), transparent 40%),
+      radial-gradient(circle at 80% 70%, rgba(193,68,14,.10), transparent 45%),
+      url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence baseFrequency='0.9'/%3E%3CfeColorMatrix values='0 0 0 0 0.16 0 0 0 0 0.09 0 0 0 0 0.06 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)'/%3E%3C/svg%3E");
+    color:var(--ink);
+    overflow-x:hidden;
+  }
+  .page{
+    max-width:920px;
+    margin:0 auto;
+    padding:40px 28px 80px;
+    position:relative;
+  }
+  /* Decorative corner ornaments */
+  .ornament{position:absolute;width:80px;height:80px;opacity:.4;pointer-events:none}
+  .ornament.tl{top:20px;left:20px;transform:rotate(0deg)}
+  .ornament.tr{top:20px;right:20px;transform:rotate(90deg)}
+  .ornament.bl{bottom:20px;left:20px;transform:rotate(-90deg)}
+  .ornament.br{bottom:20px;right:20px;transform:rotate(180deg)}
+
+  header{
+    text-align:center;
+    padding:30px 20px 40px;
+    border-bottom:2px solid var(--ink);
+    margin-bottom:40px;
+    position:relative;
+  }
+  header::before, header::after{
+    content:"❋";
+    position:absolute;
+    bottom:-12px;
+    background:var(--paper);
+    padding:0 14px;
+    color:var(--accent);
+    font-size:18px;
+  }
+  header::before{left:50%;transform:translateX(-50%)}
+  header::after{display:none}
+  .eyebrow{
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin-bottom:14px;
+  }
+  h1{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:clamp(2.4rem,6vw,4rem);
+    font-weight:400;
+    line-height:1;
+    margin-bottom:8px;
+  }
+  .subtitle{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-weight:300;
+    font-size:1.05rem;
+    color:var(--ink);
+    opacity:.7;
+  }
+
+  /* Score strip */
+  .scorebar{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    background:var(--ink);
+    color:var(--paper);
+    padding:16px 24px;
+    margin-bottom:30px;
+    font-family:'DM Mono',monospace;
+    font-size:13px;
+    letter-spacing:.1em;
+  }
+  .score-item{display:flex;flex-direction:column;align-items:center;gap:4px}
+  .score-label{font-size:10px;opacity:.7;letter-spacing:.2em;text-transform:uppercase}
+  .score-value{font-size:22px;font-weight:500;color:var(--gold)}
+  .progress-track{
+    height:6px;
+    background:rgba(244,234,213,.2);
+    flex:1;
+    margin:0 24px;
+    position:relative;
+    overflow:hidden;
+  }
+  .progress-fill{
+    position:absolute;left:0;top:0;bottom:0;
+    background:var(--gold);
+    width:0%;
+    transition:width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Quiz card */
+  .card{
+    background:var(--paper);
+    border:2px solid var(--ink);
+    padding:40px 36px;
+    position:relative;
+    box-shadow:8px 8px 0 var(--ink);
+    margin-bottom:30px;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-2px;left:-2px;right:-2px;bottom:-2px;
+    border:1px solid var(--accent);
+    pointer-events:none;
+    transform:translate(4px,4px);
+    opacity:.3;
+  }
+  .question-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:24px;
+    color:var(--accent);
+  }
+  .question-meta .num::before{content:"№ "}
+  .question-meta .type{
+    padding:4px 12px;
+    background:var(--ink);
+    color:var(--paper);
+  }
+  .english-prompt{
+    font-style:italic;
+    font-size:1.1rem;
+    opacity:.65;
+    margin-bottom:18px;
+    padding-left:16px;
+    border-left:3px solid var(--accent);
+  }
+  .hindi-question{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:clamp(2rem,5vw,3rem);
+    line-height:1.3;
+    margin-bottom:8px;
+    color:var(--ink);
+  }
+  .translit{
+    font-family:'DM Mono',monospace;
+    font-size:.95rem;
+    color:var(--ink);
+    opacity:.55;
+    margin-bottom:32px;
+  }
+
+  /* Mic button */
+  .mic-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    padding:24px 0;
+  }
+  .mic-btn{
+    width:110px;height:110px;
+    border-radius:50%;
+    border:3px solid var(--ink);
+    background:var(--paper);
+    cursor:pointer;
+    position:relative;
+    transition:transform .2s, background .2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    box-shadow:5px 5px 0 var(--ink);
+  }
+  .mic-btn:hover:not(:disabled){transform:translate(-2px,-2px);box-shadow:7px 7px 0 var(--ink)}
+  .mic-btn:active:not(:disabled){transform:translate(2px,2px);box-shadow:2px 2px 0 var(--ink)}
+  .mic-btn:disabled{opacity:.4;cursor:not-allowed}
+  .mic-btn svg{width:44px;height:44px;fill:var(--ink)}
+  .mic-btn.listening{
+    background:var(--accent);
+    animation:pulse 1.2s infinite;
+  }
+  .mic-btn.listening svg{fill:var(--paper)}
+  @keyframes pulse{
+    0%,100%{box-shadow:5px 5px 0 var(--ink), 0 0 0 0 rgba(193,68,14,.5)}
+    50%{box-shadow:5px 5px 0 var(--ink), 0 0 0 18px rgba(193,68,14,0)}
+  }
+  .mic-status{
+    font-family:'DM Mono',monospace;
+    font-size:12px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    color:var(--ink);
+    opacity:.7;
+    min-height:18px;
+    text-align:center;
+  }
+  .heard-text{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:1.4rem;
+    color:var(--accent);
+    min-height:34px;
+    text-align:center;
+    padding:0 12px;
+  }
+
+  /* Answer reveal */
+  .reveal{
+    margin-top:28px;
+    padding:24px;
+    border:2px dashed var(--ink);
+    background:rgba(212,165,116,.15);
+    display:none;
+  }
+  .reveal.show{display:block;animation:slidein .4s ease-out}
+  @keyframes slidein{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+  .reveal-label{
+    font-family:'DM Mono',monospace;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    margin-bottom:10px;
+    color:var(--accent);
+  }
+  .reveal-answer{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:1.8rem;
+    margin-bottom:6px;
+  }
+  .reveal-translit{
+    font-family:'DM Mono',monospace;
+    font-size:.9rem;
+    opacity:.6;
+    margin-bottom:6px;
+  }
+  .reveal-english{font-style:italic;opacity:.75}
+  .verdict{
+    display:inline-block;
+    padding:6px 16px;
+    margin-bottom:16px;
+    font-family:'DM Mono',monospace;
+    font-size:12px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+  }
+  .verdict.correct{background:var(--correct);color:var(--paper)}
+  .verdict.wrong{background:var(--wrong);color:var(--paper)}
+
+  /* Controls */
+  .controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:24px;
+  }
+  .btn{
+    font-family:'DM Mono',monospace;
+    font-size:12px;
+    letter-spacing:.15em;
+    text-transform:uppercase;
+    padding:14px 26px;
+    border:2px solid var(--ink);
+    background:var(--paper);
+    color:var(--ink);
+    cursor:pointer;
+    transition:all .15s;
+    box-shadow:3px 3px 0 var(--ink);
+  }
+  .btn:hover{transform:translate(-1px,-1px);box-shadow:4px 4px 0 var(--ink)}
+  .btn:active{transform:translate(1px,1px);box-shadow:2px 2px 0 var(--ink)}
+  .btn.primary{background:var(--ink);color:var(--paper)}
+  .btn.accent{background:var(--accent);color:var(--paper);border-color:var(--accent);box-shadow:3px 3px 0 var(--ink)}
+
+  /* Finish screen */
+  .finish{
+    display:none;
+    text-align:center;
+    padding:60px 30px;
+  }
+  .finish.show{display:block}
+  .final-score{
+    font-family:'Tiro Devanagari Hindi',serif;
+    font-size:clamp(4rem,12vw,7rem);
+    line-height:1;
+    color:var(--accent);
+    margin:20px 0;
+  }
+  .final-message{
+    font-family:'Fraunces',serif;
+    font-style:italic;
+    font-size:1.3rem;
+    margin-bottom:30px;
+  }
+
+  /* Footer */
+  footer{
+    text-align:center;
+    margin-top:40px;
+    font-family:'DM Mono',monospace;
+    font-size:10px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    opacity:.5;
+  }
+
+  @media (max-width:600px){
+    .card{padding:28px 22px;box-shadow:5px 5px 0 var(--ink)}
+    .scorebar{flex-wrap:wrap;gap:12px;padding:14px}
+    .progress-track{order:3;width:100%;margin:8px 0 0}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- Corner ornaments -->
+  <svg class="ornament tl" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 5 L5 40 M5 5 L40 5 M5 5 Q25 25 40 40" stroke="#c1440e" stroke-width="2" fill="none"/>
+    <circle cx="5" cy="5" r="3" fill="#c1440e"/>
+  </svg>
+  <svg class="ornament tr" viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg">
+    <path d="M5 5 L5 40 M5 5 L40 5 M5 5 Q25 25 40 40" stroke="#c1440e" stroke-width="2" fill="none"/>
+    <circle cx="5" cy="5" r="3" fill="#c1440e"/>
+  </svg>
+
+  <header>
+    <div class="eyebrow">कक्षा तीन · Class 3 · Workbook</div>
+    <h1>हिंदी अभ्यास</h1>
+    <div class="subtitle">— speak your answers aloud, learn by ear —</div>
+  </header>
+
+  <div class="scorebar">
+    <div class="score-item">
+      <span class="score-label">Question</span>
+      <span class="score-value"><span id="qNum">1</span>/50</span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+    <div class="score-item">
+      <span class="score-label">Score</span>
+      <span class="score-value" id="scoreVal">0</span>
+    </div>
+  </div>
+
+  <!-- Quiz area -->
+  <div id="quizArea">
+    <div class="card">
+      <div class="question-meta">
+        <span class="num" id="metaNum">1</span>
+        <span class="type" id="metaType">Translate</span>
+      </div>
+      <div class="english-prompt" id="englishPrompt">Translate into Hindi:</div>
+      <div class="hindi-question" id="questionText">—</div>
+      <div class="translit" id="questionTranslit">—</div>
+
+      <div class="mic-section">
+        <button class="mic-btn" id="micBtn" aria-label="Start speaking">
+          <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
+        </button>
+        <div class="mic-status" id="micStatus">Tap the microphone to speak</div>
+        <div class="heard-text" id="heardText"></div>
+      </div>
+
+      <div class="reveal" id="reveal">
+        <div class="verdict" id="verdict">Result</div>
+        <div class="reveal-label">Correct Answer</div>
+        <div class="reveal-answer" id="answerHindi">—</div>
+        <div class="reveal-translit" id="answerTranslit">—</div>
+        <div class="reveal-english" id="answerEnglish">—</div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playBtn">🔊 Hear answer</button>
+        <button class="btn primary" id="revealBtn">Show answer</button>
+        <button class="btn accent" id="nextBtn" style="display:none">Next →</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Finish screen -->
+  <div class="finish" id="finishScreen">
+    <div class="eyebrow">परीक्षा समाप्त — Quiz complete</div>
+    <h1 style="font-size:clamp(2rem,5vw,3rem)">शाबाश!</h1>
+    <div class="final-score" id="finalScore">0 / 50</div>
+    <div class="final-message" id="finalMessage">Well done!</div>
+    <div class="controls">
+      <button class="btn primary" onclick="location.reload()">Try again</button>
+    </div>
+  </div>
+
+  <footer>
+    Made with ♥ for young learners · ☙ ❦ ❧
+  </footer>
+</div>
+
+<script>
+// ============ QUESTION BANK ============
+// 50 simple Hindi sentences/phrases for Class 3
+const questions = [
+  {en:"What is your name?", hi:"तुम्हारा नाम क्या है?", tr:"tumhara naam kya hai", accept:["तुम्हारा नाम क्या है","आपका नाम क्या है","तेरा नाम क्या है"]},
+  {en:"My name is Ram.", hi:"मेरा नाम राम है।", tr:"mera naam ram hai", accept:["मेरा नाम राम है","मेरा नाम राम"]},
+  {en:"How are you?", hi:"तुम कैसे हो?", tr:"tum kaise ho", accept:["तुम कैसे हो","आप कैसे हैं","कैसे हो"]},
+  {en:"I am fine.", hi:"मैं ठीक हूँ।", tr:"main theek hoon", accept:["मैं ठीक हूँ","मैं ठीक हूं","मैं ठीक हू"]},
+  {en:"This is a book.", hi:"यह एक किताब है।", tr:"yeh ek kitaab hai", accept:["यह एक किताब है","ये एक किताब है","यह किताब है"]},
+  {en:"That is a pen.", hi:"वह एक कलम है।", tr:"wah ek kalam hai", accept:["वह एक कलम है","वो एक कलम है","वह कलम है"]},
+  {en:"I am a student.", hi:"मैं एक छात्र हूँ।", tr:"main ek chhatra hoon", accept:["मैं एक छात्र हूँ","मैं छात्र हूँ","मैं विद्यार्थी हूँ"]},
+  {en:"She is my mother.", hi:"वह मेरी माँ है।", tr:"wah meri maa hai", accept:["वह मेरी माँ है","वो मेरी माँ है","वह मेरी मां है"]},
+  {en:"He is my father.", hi:"वह मेरे पिता हैं।", tr:"wah mere pita hain", accept:["वह मेरे पिता हैं","वो मेरे पिता हैं","वह मेरे पापा हैं"]},
+  {en:"I love my family.", hi:"मुझे अपने परिवार से प्यार है।", tr:"mujhe apne parivaar se pyaar hai", accept:["मुझे अपने परिवार से प्यार है","मैं अपने परिवार से प्यार करता हूँ"]},
+  {en:"The sun is shining.", hi:"सूरज चमक रहा है।", tr:"sooraj chamak raha hai", accept:["सूरज चमक रहा है","सुरज चमक रहा है"]},
+  {en:"It is raining.", hi:"बारिश हो रही है।", tr:"baarish ho rahi hai", accept:["बारिश हो रही है","वर्षा हो रही है"]},
+  {en:"I go to school.", hi:"मैं स्कूल जाता हूँ।", tr:"main school jata hoon", accept:["मैं स्कूल जाता हूँ","मैं स्कूल जाती हूँ","मैं विद्यालय जाता हूँ"]},
+  {en:"My teacher is kind.", hi:"मेरे शिक्षक दयालु हैं।", tr:"mere shikshak dayalu hain", accept:["मेरे शिक्षक दयालु हैं","मेरी शिक्षिका दयालु हैं","मेरे टीचर दयालु हैं"]},
+  {en:"I like mangoes.", hi:"मुझे आम पसंद है।", tr:"mujhe aam pasand hai", accept:["मुझे आम पसंद है","मुझे आम अच्छा लगता है"]},
+  {en:"Water is cold.", hi:"पानी ठंडा है।", tr:"paani thanda hai", accept:["पानी ठंडा है","पानी ठण्डा है"]},
+  {en:"The cat is small.", hi:"बिल्ली छोटी है।", tr:"billi chhoti hai", accept:["बिल्ली छोटी है"]},
+  {en:"The dog is big.", hi:"कुत्ता बड़ा है।", tr:"kutta bada hai", accept:["कुत्ता बड़ा है"]},
+  {en:"Birds fly in the sky.", hi:"पक्षी आसमान में उड़ते हैं।", tr:"pakshi aasman mein udte hain", accept:["पक्षी आसमान में उड़ते हैं","चिड़िया आसमान में उड़ती है"]},
+  {en:"Fish live in water.", hi:"मछली पानी में रहती है।", tr:"machhli paani mein rehti hai", accept:["मछली पानी में रहती है","मछलियां पानी में रहती हैं"]},
+  {en:"I am happy.", hi:"मैं खुश हूँ।", tr:"main khush hoon", accept:["मैं खुश हूँ","मैं प्रसन्न हूँ"]},
+  {en:"Please give me water.", hi:"कृपया मुझे पानी दीजिए।", tr:"kripya mujhe paani deejiye", accept:["कृपया मुझे पानी दीजिए","मुझे पानी दो","पानी दीजिए"]},
+  {en:"Thank you very much.", hi:"बहुत बहुत धन्यवाद।", tr:"bahut bahut dhanyavaad", accept:["बहुत बहुत धन्यवाद","धन्यवाद","शुक्रिया"]},
+  {en:"Good morning.", hi:"सुप्रभात।", tr:"suprabhaat", accept:["सुप्रभात","गुड मॉर्निंग","नमस्ते"]},
+  {en:"Good night.", hi:"शुभ रात्रि।", tr:"shubh raatri", accept:["शुभ रात्रि","गुड नाइट"]},
+  {en:"Where is your house?", hi:"तुम्हारा घर कहाँ है?", tr:"tumhara ghar kahan hai", accept:["तुम्हारा घर कहाँ है","आपका घर कहाँ है","तुम्हारा घर कहां है"]},
+  {en:"I live in Delhi.", hi:"मैं दिल्ली में रहता हूँ।", tr:"main dilli mein rehta hoon", accept:["मैं दिल्ली में रहता हूँ","मैं दिल्ली में रहती हूँ"]},
+  {en:"What time is it?", hi:"क्या समय हुआ है?", tr:"kya samay hua hai", accept:["क्या समय हुआ है","कितना बजा है","कितने बजे हैं"]},
+  {en:"I am hungry.", hi:"मुझे भूख लगी है।", tr:"mujhe bhookh lagi hai", accept:["मुझे भूख लगी है","मैं भूखा हूँ"]},
+  {en:"I am thirsty.", hi:"मुझे प्यास लगी है।", tr:"mujhe pyaas lagi hai", accept:["मुझे प्यास लगी है","मैं प्यासा हूँ"]},
+  {en:"Today is Monday.", hi:"आज सोमवार है।", tr:"aaj somvaar hai", accept:["आज सोमवार है"]},
+  {en:"The flower is beautiful.", hi:"फूल सुंदर है।", tr:"phool sundar hai", accept:["फूल सुंदर है","फूल खूबसूरत है"]},
+  {en:"I have two brothers.", hi:"मेरे दो भाई हैं।", tr:"mere do bhai hain", accept:["मेरे दो भाई हैं"]},
+  {en:"My sister sings well.", hi:"मेरी बहन अच्छा गाती है।", tr:"meri behen achha gaati hai", accept:["मेरी बहन अच्छा गाती है","मेरी बहन अच्छी गाती है"]},
+  {en:"Cows give us milk.", hi:"गायें हमें दूध देती हैं।", tr:"gaayein hamein doodh deti hain", accept:["गायें हमें दूध देती हैं","गाय हमें दूध देती है"]},
+  {en:"The tree is tall.", hi:"पेड़ ऊँचा है।", tr:"ped ooncha hai", accept:["पेड़ ऊँचा है","पेड़ बड़ा है","पेड़ ऊंचा है"]},
+  {en:"I read a story.", hi:"मैं एक कहानी पढ़ता हूँ।", tr:"main ek kahani padhta hoon", accept:["मैं एक कहानी पढ़ता हूँ","मैं कहानी पढ़ती हूँ"]},
+  {en:"Children play in the park.", hi:"बच्चे पार्क में खेलते हैं।", tr:"bachhe park mein khelte hain", accept:["बच्चे पार्क में खेलते हैं","बच्चे बगीचे में खेलते हैं"]},
+  {en:"The moon is bright.", hi:"चाँद चमकीला है।", tr:"chaand chamkila hai", accept:["चाँद चमकीला है","चांद चमकीला है"]},
+  {en:"I love my country.", hi:"मुझे अपने देश से प्यार है।", tr:"mujhe apne desh se pyaar hai", accept:["मुझे अपने देश से प्यार है","मैं अपने देश से प्यार करता हूँ"]},
+  {en:"My friend is good.", hi:"मेरा मित्र अच्छा है।", tr:"mera mitra achha hai", accept:["मेरा मित्र अच्छा है","मेरा दोस्त अच्छा है"]},
+  {en:"I write with a pencil.", hi:"मैं पेंसिल से लिखता हूँ।", tr:"main pencil se likhta hoon", accept:["मैं पेंसिल से लिखता हूँ","मैं पेंसिल से लिखती हूँ"]},
+  {en:"The bag is heavy.", hi:"बैग भारी है।", tr:"bag bhaari hai", accept:["बैग भारी है","थैला भारी है"]},
+  {en:"Open the door, please.", hi:"दरवाज़ा खोलो।", tr:"darwaza kholo", accept:["दरवाज़ा खोलो","दरवाजा खोलो","कृपया दरवाज़ा खोलिए"]},
+  {en:"Close the window.", hi:"खिड़की बंद करो।", tr:"khidki band karo", accept:["खिड़की बंद करो","खिड़की बंद कीजिए"]},
+  {en:"I brush my teeth.", hi:"मैं अपने दाँत साफ़ करता हूँ।", tr:"main apne daant saaf karta hoon", accept:["मैं अपने दाँत साफ़ करता हूँ","मैं दाँत साफ करता हूँ","मैं दांत साफ करता हूं"]},
+  {en:"The bus is slow.", hi:"बस धीमी है।", tr:"bus dheemi hai", accept:["बस धीमी है"]},
+  {en:"My shoes are new.", hi:"मेरे जूते नए हैं।", tr:"mere joote naye hain", accept:["मेरे जूते नए हैं","मेरे जूते नये हैं"]},
+  {en:"The food is tasty.", hi:"खाना स्वादिष्ट है।", tr:"khana swadisht hai", accept:["खाना स्वादिष्ट है","खाना मज़ेदार है"]},
+  {en:"I love my school.", hi:"मुझे अपना स्कूल पसंद है।", tr:"mujhe apna school pasand hai", accept:["मुझे अपना स्कूल पसंद है","मुझे अपना विद्यालय पसंद है","मैं अपने स्कूल से प्यार करता हूँ"]}
+];
+
+// ============ STATE ============
+let current = 0;
+let score = 0;
+let answered = false;
+
+const $ = id => document.getElementById(id);
+
+function loadQuestion(){
+  if(current >= questions.length){ finish(); return; }
+  const q = questions[current];
+  answered = false;
+  $('qNum').textContent = current+1;
+  $('metaNum').textContent = String(current+1).padStart(2,'0');
+  $('englishPrompt').textContent = 'Translate into Hindi: "' + q.en + '"';
+  $('questionText').textContent = '"' + q.en + '"';
+  $('questionTranslit').textContent = 'Say in Hindi: ' + q.tr;
+  $('heardText').textContent = '';
+  $('micStatus').textContent = 'Tap the microphone to speak';
+  $('reveal').classList.remove('show');
+  $('nextBtn').style.display = 'none';
+  $('revealBtn').style.display = 'inline-block';
+  $('micBtn').disabled = false;
+  $('progress').style.width = ((current)/questions.length*100) + '%';
+}
+
+// ============ NORMALIZATION & MATCHING ============
+function normalize(text){
+  if(!text) return '';
+  return text
+    .replace(/[।.,?!"'`'']/g, '')
+    .replace(/\s+/g,' ')
+    .trim()
+    .toLowerCase();
+}
+
+function checkAnswer(spoken){
+  const q = questions[current];
+  const norm = normalize(spoken);
+  // Direct accept list
+  for(const ans of q.accept){
+    if(normalize(ans) === norm) return true;
+  }
+  // Fuzzy: count matching words (>=70% of expected words present)
+  const expectedWords = normalize(q.hi).split(' ').filter(w=>w.length>1);
+  const spokenWords = new Set(norm.split(' '));
+  let matches = 0;
+  for(const w of expectedWords){ if(spokenWords.has(w)) matches++; }
+  if(expectedWords.length>0 && matches/expectedWords.length >= 0.7) return true;
+  return false;
+}
+
+function showResult(correct, heard){
+  const q = questions[current];
+  $('verdict').textContent = correct ? '✓ सही — Correct!' : '✗ गलत — Try next time';
+  $('verdict').className = 'verdict ' + (correct ? 'correct' : 'wrong');
+  $('answerHindi').textContent = q.hi;
+  $('answerTranslit').textContent = q.tr;
+  $('answerEnglish').textContent = q.en;
+  $('reveal').classList.add('show');
+  $('revealBtn').style.display = 'none';
+  $('nextBtn').style.display = 'inline-block';
+  if(correct && !answered){ score++; $('scoreVal').textContent = score; }
+  answered = true;
+  $('micBtn').disabled = true;
+}
+
+// ============ SPEECH RECOGNITION ============
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+
+if(SR){
+  recognition = new SR();
+  recognition.lang = 'hi-IN';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 5;
+
+  recognition.onresult = (e) => {
+    let allHeard = [];
+    for(let i=0; i<e.results[0].length; i++){
+      allHeard.push(e.results[0][i].transcript);
+    }
+    const heard = allHeard[0];
+    $('heardText').textContent = '"' + heard + '"';
+    // Try matching against any of the alternatives
+    let correct = false;
+    for(const alt of allHeard){
+      if(checkAnswer(alt)){ correct = true; break; }
+    }
+    showResult(correct, heard);
+  };
+  recognition.onerror = (e) => {
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+    if(e.error === 'no-speech'){
+      $('micStatus').textContent = 'No speech detected. Try again.';
+    } else if(e.error === 'not-allowed'){
+      $('micStatus').textContent = 'Microphone access denied. Use "Show answer" instead.';
+    } else {
+      $('micStatus').textContent = 'Error: ' + e.error + '. Try "Show answer".';
+    }
+  };
+  recognition.onend = () => {
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+  };
+} else {
+  $('micStatus').textContent = '⚠ Voice not supported. Use Chrome/Edge or click "Show answer".';
+  $('micBtn').disabled = true;
+}
+
+$('micBtn').addEventListener('click', () => {
+  if(!recognition || answered) return;
+  if(isListening){
+    recognition.stop();
+    return;
+  }
+  try{
+    isListening = true;
+    $('micBtn').classList.add('listening');
+    $('micStatus').textContent = '● Listening… speak in Hindi';
+    $('heardText').textContent = '';
+    recognition.start();
+  }catch(err){
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+    $('micStatus').textContent = 'Could not start. Try again.';
+  }
+});
+
+// ============ TEXT TO SPEECH ============
+$('playBtn').addEventListener('click', () => {
+  const q = questions[current];
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(q.hi);
+  u.lang = 'hi-IN';
+  u.rate = 0.85;
+  window.speechSynthesis.speak(u);
+});
+
+// ============ CONTROLS ============
+$('revealBtn').addEventListener('click', () => {
+  showResult(false, '(skipped)');
+  $('verdict').textContent = '◇ देखा — Answer revealed';
+  $('verdict').className = 'verdict wrong';
+});
+
+$('nextBtn').addEventListener('click', () => {
+  current++;
+  loadQuestion();
+});
+
+// ============ FINISH ============
+function finish(){
+  $('quizArea').style.display = 'none';
+  $('finishScreen').classList.add('show');
+  $('finalScore').textContent = score + ' / ' + questions.length;
+  $('progress').style.width = '100%';
+  const pct = score/questions.length;
+  let msg = '';
+  if(pct >= 0.9) msg = 'Outstanding! आप तो हिंदी के विशेषज्ञ हैं!';
+  else if(pct >= 0.7) msg = 'Excellent work! बहुत अच्छा!';
+  else if(pct >= 0.5) msg = 'Good effort! Keep practising — अभ्यास करते रहो!';
+  else msg = 'Keep learning! कोशिश करते रहो!';
+  $('finalMessage').textContent = msg;
+}
+
+// Init
+loadQuestion();
+</script>
+</body>
+</html>

@@ -1,0 +1,790 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>English Practice — Class 3 Workbook</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;0,900;1,400&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0f1419;
+    --surface:#1a2128;
+    --paper:#f5f1e8;
+    --ink:#1a2128;
+    --accent:#e8b04a;
+    --accent2:#5d8aa8;
+    --correct:#7fb069;
+    --wrong:#d96459;
+    --muted:#8a96a3;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html,body{min-height:100vh}
+  body{
+    font-family:'Inter',sans-serif;
+    background:var(--bg);
+    background-image:
+      radial-gradient(ellipse at 15% 20%, rgba(232,176,74,.08), transparent 50%),
+      radial-gradient(ellipse at 85% 80%, rgba(93,138,168,.10), transparent 50%);
+    color:var(--paper);
+    overflow-x:hidden;
+    min-height:100vh;
+  }
+  /* Subtle grid texture */
+  body::before{
+    content:"";
+    position:fixed;inset:0;
+    background-image:
+      linear-gradient(rgba(245,241,232,.02) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(245,241,232,.02) 1px, transparent 1px);
+    background-size:40px 40px;
+    pointer-events:none;
+    z-index:0;
+  }
+  .page{
+    max-width:960px;
+    margin:0 auto;
+    padding:50px 28px 80px;
+    position:relative;
+    z-index:1;
+  }
+
+  header{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:end;
+    gap:30px;
+    padding-bottom:30px;
+    border-bottom:1px solid rgba(245,241,232,.15);
+    margin-bottom:40px;
+  }
+  .crest{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-weight:400;
+    font-size:11px;
+    letter-spacing:.4em;
+    text-transform:uppercase;
+    color:var(--accent);
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    border-left:1px solid var(--accent);
+    padding-left:8px;
+    align-self:stretch;
+  }
+  .title-block h1{
+    font-family:'Playfair Display',serif;
+    font-weight:900;
+    font-size:clamp(2.8rem,7vw,5rem);
+    line-height:.95;
+    letter-spacing:-.02em;
+    margin-bottom:8px;
+  }
+  .title-block h1 .italic{
+    font-style:italic;
+    font-weight:400;
+    color:var(--accent);
+  }
+  .title-block .subtitle{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:1.1rem;
+    color:var(--muted);
+  }
+  .edition{
+    text-align:right;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--muted);
+    line-height:2;
+  }
+  .edition strong{color:var(--accent);font-weight:500}
+
+  /* Score strip */
+  .scorebar{
+    display:grid;
+    grid-template-columns:auto 1fr auto;
+    align-items:center;
+    gap:24px;
+    background:var(--surface);
+    border:1px solid rgba(245,241,232,.1);
+    padding:18px 26px;
+    margin-bottom:32px;
+  }
+  .score-item{display:flex;flex-direction:column;gap:4px}
+  .score-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .score-value{
+    font-family:'Playfair Display',serif;
+    font-size:24px;
+    font-weight:700;
+    color:var(--accent);
+  }
+  .score-value .total{color:var(--muted);font-weight:400;font-size:18px}
+  .progress-track{
+    height:4px;
+    background:rgba(245,241,232,.08);
+    position:relative;
+    overflow:hidden;
+  }
+  .progress-fill{
+    position:absolute;left:0;top:0;bottom:0;
+    background:linear-gradient(90deg,var(--accent),var(--accent2));
+    width:0%;
+    transition:width .5s cubic-bezier(.4,0,.2,1);
+  }
+
+  /* Quiz card */
+  .card{
+    background:var(--surface);
+    border:1px solid rgba(245,241,232,.1);
+    padding:42px 38px;
+    position:relative;
+    margin-bottom:30px;
+  }
+  .card::before{
+    content:"";
+    position:absolute;
+    top:-1px;left:-1px;
+    width:60px;height:60px;
+    border-top:2px solid var(--accent);
+    border-left:2px solid var(--accent);
+  }
+  .card::after{
+    content:"";
+    position:absolute;
+    bottom:-1px;right:-1px;
+    width:60px;height:60px;
+    border-bottom:2px solid var(--accent);
+    border-right:2px solid var(--accent);
+  }
+  .question-meta{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    margin-bottom:28px;
+    color:var(--muted);
+  }
+  .question-meta .num{color:var(--accent)}
+  .question-meta .type{
+    padding:5px 12px;
+    border:1px solid var(--accent);
+    color:var(--accent);
+  }
+  .prompt-label{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:.95rem;
+    color:var(--muted);
+    margin-bottom:18px;
+  }
+  .question-text{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(1.8rem,4.5vw,2.8rem);
+    font-weight:400;
+    line-height:1.3;
+    margin-bottom:8px;
+    color:var(--paper);
+  }
+  .question-text .em{font-style:italic;color:var(--accent)}
+  .hint{
+    font-family:'JetBrains Mono',monospace;
+    font-size:.85rem;
+    color:var(--muted);
+    margin-bottom:32px;
+  }
+  .hint::before{content:"→ ";color:var(--accent)}
+
+  /* Mic */
+  .mic-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:18px;
+    padding:24px 0;
+  }
+  .mic-btn{
+    width:100px;height:100px;
+    border-radius:50%;
+    border:2px solid var(--accent);
+    background:transparent;
+    cursor:pointer;
+    position:relative;
+    transition:all .2s;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:var(--accent);
+  }
+  .mic-btn:hover:not(:disabled){
+    background:var(--accent);
+    color:var(--surface);
+    transform:scale(1.05);
+  }
+  .mic-btn:disabled{opacity:.3;cursor:not-allowed}
+  .mic-btn svg{width:40px;height:40px;fill:currentColor}
+  .mic-btn.listening{
+    background:var(--wrong);
+    border-color:var(--wrong);
+    color:var(--paper);
+    animation:pulse 1.4s infinite;
+  }
+  @keyframes pulse{
+    0%,100%{box-shadow:0 0 0 0 rgba(217,100,89,.5)}
+    50%{box-shadow:0 0 0 22px rgba(217,100,89,0)}
+  }
+  .mic-status{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--muted);
+    min-height:18px;
+    text-align:center;
+  }
+  .heard-text{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:1.4rem;
+    color:var(--accent);
+    min-height:34px;
+    text-align:center;
+    padding:0 12px;
+  }
+
+  /* Reveal */
+  .reveal{
+    margin-top:32px;
+    padding:26px 28px;
+    background:rgba(245,241,232,.04);
+    border-left:3px solid var(--accent);
+    display:none;
+  }
+  .reveal.show{display:block;animation:slidein .4s ease-out}
+  @keyframes slidein{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+  .reveal-label{
+    font-family:'JetBrains Mono',monospace;
+    font-size:10px;
+    letter-spacing:.25em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:10px;
+  }
+  .reveal-answer{
+    font-family:'Playfair Display',serif;
+    font-size:1.6rem;
+    line-height:1.4;
+    color:var(--paper);
+    margin-bottom:6px;
+  }
+  .reveal-alts{
+    font-family:'Inter',sans-serif;
+    font-size:.85rem;
+    color:var(--muted);
+    font-style:italic;
+  }
+  .verdict{
+    display:inline-block;
+    padding:6px 16px;
+    margin-bottom:18px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    border:1px solid currentColor;
+  }
+  .verdict.correct{color:var(--correct)}
+  .verdict.wrong{color:var(--wrong)}
+  .verdict.skipped{color:var(--muted)}
+
+  /* Controls */
+  .controls{
+    display:flex;
+    gap:12px;
+    flex-wrap:wrap;
+    justify-content:center;
+    margin-top:26px;
+  }
+  .btn{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    padding:13px 24px;
+    border:1px solid var(--paper);
+    background:transparent;
+    color:var(--paper);
+    cursor:pointer;
+    transition:all .15s;
+  }
+  .btn:hover{background:var(--paper);color:var(--surface)}
+  .btn.primary{border-color:var(--accent);color:var(--accent)}
+  .btn.primary:hover{background:var(--accent);color:var(--surface)}
+  .btn.accent{background:var(--accent);color:var(--surface);border-color:var(--accent)}
+  .btn.accent:hover{background:var(--paper);border-color:var(--paper)}
+
+  /* Finish */
+  .finish{
+    display:none;
+    text-align:center;
+    padding:80px 30px;
+    background:var(--surface);
+    border:1px solid rgba(245,241,232,.1);
+    position:relative;
+  }
+  .finish.show{display:block}
+  .finish::before, .finish::after{
+    content:"";position:absolute;width:60px;height:60px;
+  }
+  .finish::before{top:-1px;left:-1px;border-top:2px solid var(--accent);border-left:2px solid var(--accent)}
+  .finish::after{bottom:-1px;right:-1px;border-bottom:2px solid var(--accent);border-right:2px solid var(--accent)}
+  .finish .eyebrow{
+    font-family:'JetBrains Mono',monospace;
+    font-size:11px;
+    letter-spacing:.3em;
+    text-transform:uppercase;
+    color:var(--muted);
+    margin-bottom:24px;
+  }
+  .finish h2{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(2.4rem,6vw,3.6rem);
+    font-style:italic;
+    color:var(--accent);
+    margin-bottom:18px;
+  }
+  .final-score{
+    font-family:'Playfair Display',serif;
+    font-size:clamp(4rem,12vw,7rem);
+    line-height:1;
+    color:var(--paper);
+    margin:24px 0;
+    font-weight:900;
+  }
+  .final-score .of{color:var(--muted);font-weight:400}
+  .final-message{
+    font-family:'Playfair Display',serif;
+    font-style:italic;
+    font-size:1.2rem;
+    color:var(--muted);
+    max-width:480px;
+    margin:0 auto 32px;
+    line-height:1.6;
+  }
+
+  /* Footer */
+  footer{
+    text-align:center;
+    margin-top:50px;
+    font-family:'JetBrains Mono',monospace;
+    font-size:9px;
+    letter-spacing:.35em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  footer .dot{color:var(--accent);margin:0 8px}
+
+  @media (max-width:640px){
+    .page{padding:30px 18px 60px}
+    header{grid-template-columns:1fr;gap:16px}
+    .crest{writing-mode:horizontal-tb;transform:none;border-left:none;border-top:1px solid var(--accent);padding:8px 0 0}
+    .edition{text-align:left}
+    .card{padding:30px 22px}
+    .scorebar{grid-template-columns:1fr 1fr;gap:14px;padding:14px 18px}
+    .progress-track{grid-column:1/-1;order:3;width:100%}
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <header>
+    <div class="crest">Vol. III · Workbook</div>
+    <div class="title-block">
+      <h1>The English <span class="italic">Practice</span></h1>
+      <div class="subtitle">— one hundred questions for young readers —</div>
+    </div>
+    <div class="edition">
+      <div>Class <strong>3</strong></div>
+      <div>Speak <strong>·</strong> Listen</div>
+      <div><strong>2026</strong> ed.</div>
+    </div>
+  </header>
+
+  <div class="scorebar">
+    <div class="score-item">
+      <span class="score-label">Question</span>
+      <span class="score-value"><span id="qNum">1</span><span class="total">/100</span></span>
+    </div>
+    <div class="progress-track"><div class="progress-fill" id="progress"></div></div>
+    <div class="score-item" style="align-items:flex-end">
+      <span class="score-label">Score</span>
+      <span class="score-value" id="scoreVal">0</span>
+    </div>
+  </div>
+
+  <div id="quizArea">
+    <div class="card">
+      <div class="question-meta">
+        <span class="num" id="metaNum">001</span>
+        <span class="type" id="metaType">Vocabulary</span>
+      </div>
+      <div class="prompt-label" id="promptLabel">Question:</div>
+      <div class="question-text" id="questionText">—</div>
+      <div class="hint" id="hintText">Speak your answer aloud</div>
+
+      <div class="mic-section">
+        <button class="mic-btn" id="micBtn" aria-label="Start speaking">
+          <svg viewBox="0 0 24 24"><path d="M12 14a3 3 0 003-3V5a3 3 0 00-6 0v6a3 3 0 003 3zm5-3a5 5 0 01-10 0H5a7 7 0 006 6.92V21h2v-3.08A7 7 0 0019 11h-2z"/></svg>
+        </button>
+        <div class="mic-status" id="micStatus">Tap the microphone to speak</div>
+        <div class="heard-text" id="heardText"></div>
+      </div>
+
+      <div class="reveal" id="reveal">
+        <div class="verdict" id="verdict">Result</div>
+        <div class="reveal-label">Correct Answer</div>
+        <div class="reveal-answer" id="answerText">—</div>
+        <div class="reveal-alts" id="answerAlts"></div>
+      </div>
+
+      <div class="controls">
+        <button class="btn" id="playBtn">🔊 Hear question</button>
+        <button class="btn primary" id="revealBtn">Show answer</button>
+        <button class="btn accent" id="nextBtn" style="display:none">Next question →</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="finish" id="finishScreen">
+    <div class="eyebrow">Workbook complete</div>
+    <h2>Well done!</h2>
+    <div class="final-score"><span id="finalScore">0</span><span class="of"> / 100</span></div>
+    <div class="final-message" id="finalMessage">—</div>
+    <div class="controls">
+      <button class="btn primary" onclick="location.reload()">Start again</button>
+    </div>
+  </div>
+
+  <footer>
+    Read aloud <span class="dot">◆</span> Listen carefully <span class="dot">◆</span> Practise daily
+  </footer>
+</div>
+
+<script>
+// ============ QUESTION BANK — 100 Questions ============
+// Types: "vocab" (synonym/meaning), "antonym", "fill" (fill blank), "answer" (Q&A), "plural", "spell", "tense", "rhyme", "noun_type", "article"
+const questions = [
+  // Vocabulary / Synonyms
+  {type:"Synonym", q:"What is another word for 'happy'?", a:"glad", alts:["joyful","cheerful","pleased","delighted","merry"]},
+  {type:"Synonym", q:"What is another word for 'big'?", a:"large", alts:["huge","great","enormous","giant"]},
+  {type:"Synonym", q:"What is another word for 'small'?", a:"little", alts:["tiny","mini","short"]},
+  {type:"Synonym", q:"What is another word for 'fast'?", a:"quick", alts:["speedy","rapid","swift"]},
+  {type:"Synonym", q:"What is another word for 'pretty'?", a:"beautiful", alts:["lovely","cute","nice"]},
+  {type:"Synonym", q:"What is another word for 'smart'?", a:"clever", alts:["intelligent","bright","wise"]},
+  {type:"Synonym", q:"What is another word for 'angry'?", a:"mad", alts:["cross","upset","furious"]},
+  {type:"Synonym", q:"What is another word for 'begin'?", a:"start", alts:["commence"]},
+  {type:"Synonym", q:"What is another word for 'sick'?", a:"ill", alts:["unwell","poorly"]},
+  {type:"Synonym", q:"What is another word for 'tired'?", a:"sleepy", alts:["exhausted","weary"]},
+
+  // Antonyms
+  {type:"Antonym", q:"What is the opposite of 'hot'?", a:"cold", alts:["cool","chilly"]},
+  {type:"Antonym", q:"What is the opposite of 'day'?", a:"night", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'up'?", a:"down", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'in'?", a:"out", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'wet'?", a:"dry", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'old'?", a:"new", alts:["young"]},
+  {type:"Antonym", q:"What is the opposite of 'open'?", a:"closed", alts:["close","shut"]},
+  {type:"Antonym", q:"What is the opposite of 'tall'?", a:"short", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'rich'?", a:"poor", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'easy'?", a:"hard", alts:["difficult","tough"]},
+  {type:"Antonym", q:"What is the opposite of 'light'?", a:"dark", alts:["heavy"]},
+  {type:"Antonym", q:"What is the opposite of 'love'?", a:"hate", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'always'?", a:"never", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'full'?", a:"empty", alts:[]},
+  {type:"Antonym", q:"What is the opposite of 'noisy'?", a:"quiet", alts:["silent"]},
+
+  // Plurals
+  {type:"Plural", q:"What is the plural of 'cat'?", a:"cats", alts:[]},
+  {type:"Plural", q:"What is the plural of 'dog'?", a:"dogs", alts:[]},
+  {type:"Plural", q:"What is the plural of 'baby'?", a:"babies", alts:[]},
+  {type:"Plural", q:"What is the plural of 'box'?", a:"boxes", alts:[]},
+  {type:"Plural", q:"What is the plural of 'man'?", a:"men", alts:[]},
+  {type:"Plural", q:"What is the plural of 'woman'?", a:"women", alts:[]},
+  {type:"Plural", q:"What is the plural of 'child'?", a:"children", alts:[]},
+  {type:"Plural", q:"What is the plural of 'foot'?", a:"feet", alts:[]},
+  {type:"Plural", q:"What is the plural of 'tooth'?", a:"teeth", alts:[]},
+  {type:"Plural", q:"What is the plural of 'mouse'?", a:"mice", alts:[]},
+  {type:"Plural", q:"What is the plural of 'leaf'?", a:"leaves", alts:[]},
+  {type:"Plural", q:"What is the plural of 'bus'?", a:"buses", alts:[]},
+  {type:"Plural", q:"What is the plural of 'lady'?", a:"ladies", alts:[]},
+  {type:"Plural", q:"What is the plural of 'fish'?", a:"fish", alts:["fishes"]},
+  {type:"Plural", q:"What is the plural of 'sheep'?", a:"sheep", alts:[]},
+
+  // Articles
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'apple'?", a:"an", alts:[]},
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'cat'?", a:"a", alts:[]},
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'elephant'?", a:"an", alts:[]},
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'umbrella'?", a:"an", alts:[]},
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'book'?", a:"a", alts:[]},
+  {type:"Articles", q:"Should we use 'a' or 'an' before 'orange'?", a:"an", alts:[]},
+
+  // Past tense
+  {type:"Past Tense", q:"What is the past tense of 'go'?", a:"went", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'eat'?", a:"ate", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'run'?", a:"ran", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'see'?", a:"saw", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'come'?", a:"came", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'write'?", a:"wrote", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'sing'?", a:"sang", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'play'?", a:"played", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'take'?", a:"took", alts:[]},
+  {type:"Past Tense", q:"What is the past tense of 'give'?", a:"gave", alts:[]},
+
+  // Fill in the blanks
+  {type:"Fill Blank", q:"Fill the blank: 'I ___ a student.' (am, is, are)", a:"am", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'She ___ my sister.' (am, is, are)", a:"is", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'They ___ playing.' (am, is, are)", a:"are", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'The cat sat ___ the mat.' (on, in, at)", a:"on", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'Birds fly ___ the sky.' (on, in, at)", a:"in", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'I go ___ school every day.' (at, to, in)", a:"to", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'The book is ___ the table.' (on, under, in)", a:"on", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'Sunday comes after ___.'", a:"saturday", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'Monday comes after ___.'", a:"sunday", alts:[]},
+  {type:"Fill Blank", q:"Fill the blank: 'A baby cow is called a ___.'", a:"calf", alts:[]},
+
+  // Question and Answer
+  {type:"Answer", q:"How many days are there in a week?", a:"seven", alts:["7"]},
+  {type:"Answer", q:"How many months are there in a year?", a:"twelve", alts:["12"]},
+  {type:"Answer", q:"What colour is the sky?", a:"blue", alts:[]},
+  {type:"Answer", q:"What colour is grass?", a:"green", alts:[]},
+  {type:"Answer", q:"What colour is a banana?", a:"yellow", alts:[]},
+  {type:"Answer", q:"Which day comes after Friday?", a:"saturday", alts:[]},
+  {type:"Answer", q:"Which month comes after January?", a:"february", alts:[]},
+  {type:"Answer", q:"What do we call a baby dog?", a:"puppy", alts:[]},
+  {type:"Answer", q:"What do we call a baby cat?", a:"kitten", alts:[]},
+  {type:"Answer", q:"What do bees make?", a:"honey", alts:[]},
+  {type:"Answer", q:"Where do fish live?", a:"water", alts:["in water","sea","ocean","river"]},
+  {type:"Answer", q:"What do we use to write?", a:"pen", alts:["pencil","pen or pencil"]},
+  {type:"Answer", q:"What is the first letter of the alphabet?", a:"a", alts:[]},
+  {type:"Answer", q:"What is the last letter of the alphabet?", a:"z", alts:["zed","zee"]},
+  {type:"Answer", q:"How many wheels does a bicycle have?", a:"two", alts:["2"]},
+  {type:"Answer", q:"How many legs does a spider have?", a:"eight", alts:["8"]},
+
+  // Spelling
+  {type:"Spelling", q:"How do you spell the name of the season after summer?", a:"autumn", alts:["fall"]},
+  {type:"Spelling", q:"How do you spell the word for the opposite of 'yes'?", a:"no", alts:[]},
+  {type:"Spelling", q:"Spell the word that means 'a place to learn'.", a:"school", alts:[]},
+  {type:"Spelling", q:"Spell the word that means 'a person who teaches'.", a:"teacher", alts:[]},
+
+  // Rhymes
+  {type:"Rhyme", q:"Tell me a word that rhymes with 'cat'.", a:"hat", alts:["bat","mat","rat","sat","fat","pat","that","flat"]},
+  {type:"Rhyme", q:"Tell me a word that rhymes with 'sun'.", a:"fun", alts:["run","bun","gun","one","done","none"]},
+  {type:"Rhyme", q:"Tell me a word that rhymes with 'tree'.", a:"bee", alts:["see","three","free","key","me","we","sea","pea"]},
+  {type:"Rhyme", q:"Tell me a word that rhymes with 'star'.", a:"car", alts:["far","jar","bar","par"]},
+  {type:"Rhyme", q:"Tell me a word that rhymes with 'book'.", a:"look", alts:["cook","took","hook","shook","brook"]},
+
+  // Animals and their sounds / homes
+  {type:"Animals", q:"What sound does a cow make?", a:"moo", alts:[]},
+  {type:"Animals", q:"What sound does a duck make?", a:"quack", alts:[]},
+  {type:"Animals", q:"What sound does a lion make?", a:"roar", alts:["growl"]},
+  {type:"Animals", q:"Where does a bee live?", a:"hive", alts:["beehive"]},
+  {type:"Animals", q:"Where does a bird live?", a:"nest", alts:[]},
+
+  // Parts of speech
+  {type:"Grammar", q:"Is 'run' a noun or a verb?", a:"verb", alts:[]},
+  {type:"Grammar", q:"Is 'happy' a noun or an adjective?", a:"adjective", alts:[]},
+  {type:"Grammar", q:"Is 'apple' a noun or a verb?", a:"noun", alts:[]},
+  {type:"Grammar", q:"Is 'jump' a noun or a verb?", a:"verb", alts:[]},
+  {type:"Grammar", q:"Is 'red' a noun or an adjective?", a:"adjective", alts:[]},
+
+  // General knowledge in English
+  {type:"GK", q:"How many colours are there in a rainbow?", a:"seven", alts:["7"]},
+  {type:"GK", q:"How many sides does a triangle have?", a:"three", alts:["3"]},
+  {type:"GK", q:"How many sides does a square have?", a:"four", alts:["4"]},
+  {type:"GK", q:"What is the capital of India?", a:"new delhi", alts:["delhi"]},
+  {type:"GK", q:"Which planet do we live on?", a:"earth", alts:["the earth"]}
+];
+
+// ============ STATE ============
+let current = 0;
+let score = 0;
+let answered = false;
+const $ = id => document.getElementById(id);
+
+function loadQuestion(){
+  if(current >= questions.length){ finish(); return; }
+  const q = questions[current];
+  answered = false;
+  $('qNum').textContent = current+1;
+  $('metaNum').textContent = String(current+1).padStart(3,'0');
+  $('metaType').textContent = q.type;
+  $('promptLabel').textContent = 'Question ' + (current+1) + ' of ' + questions.length;
+  $('questionText').textContent = q.q;
+  $('hintText').textContent = 'Tap the mic and say your answer in English';
+  $('heardText').textContent = '';
+  $('micStatus').textContent = 'Tap the microphone to speak';
+  $('reveal').classList.remove('show');
+  $('nextBtn').style.display = 'none';
+  $('revealBtn').style.display = 'inline-block';
+  $('micBtn').disabled = false;
+  $('progress').style.width = ((current)/questions.length*100) + '%';
+}
+
+// ============ MATCHING ============
+function normalize(text){
+  if(!text) return '';
+  return text
+    .toLowerCase()
+    .replace(/[.,?!"'`'']/g, '')
+    .replace(/\s+/g,' ')
+    .trim();
+}
+
+function checkAnswer(spoken){
+  const q = questions[current];
+  const norm = normalize(spoken);
+  if(!norm) return false;
+  const allAnswers = [q.a, ...q.alts].map(normalize);
+  // Exact match
+  if(allAnswers.includes(norm)) return true;
+  // Contains match (e.g. spoken "the answer is cat" includes "cat")
+  for(const ans of allAnswers){
+    if(ans && norm.split(' ').includes(ans)) return true;
+    if(ans && norm.includes(' '+ans+' ')) return true;
+    if(ans && (norm.startsWith(ans+' ') || norm.endsWith(' '+ans))) return true;
+  }
+  return false;
+}
+
+function showResult(correct, skipped=false){
+  const q = questions[current];
+  if(skipped){
+    $('verdict').textContent = '◇ Revealed';
+    $('verdict').className = 'verdict skipped';
+  } else {
+    $('verdict').textContent = correct ? '✓ Correct' : '✗ Not quite';
+    $('verdict').className = 'verdict ' + (correct ? 'correct' : 'wrong');
+  }
+  $('answerText').textContent = q.a.charAt(0).toUpperCase() + q.a.slice(1);
+  if(q.alts && q.alts.length){
+    $('answerAlts').textContent = 'Also accepted: ' + q.alts.join(', ');
+    $('answerAlts').style.display = 'block';
+  } else {
+    $('answerAlts').style.display = 'none';
+  }
+  $('reveal').classList.add('show');
+  $('revealBtn').style.display = 'none';
+  $('nextBtn').style.display = 'inline-block';
+  if(correct && !answered){ score++; $('scoreVal').textContent = score; }
+  answered = true;
+  $('micBtn').disabled = true;
+}
+
+// ============ SPEECH RECOGNITION ============
+const SR = window.SpeechRecognition || window.webkitSpeechRecognition;
+let recognition = null;
+let isListening = false;
+
+if(SR){
+  recognition = new SR();
+  recognition.lang = 'en-US';
+  recognition.continuous = false;
+  recognition.interimResults = false;
+  recognition.maxAlternatives = 5;
+
+  recognition.onresult = (e) => {
+    let allHeard = [];
+    for(let i=0; i<e.results[0].length; i++){
+      allHeard.push(e.results[0][i].transcript);
+    }
+    const heard = allHeard[0];
+    $('heardText').textContent = '"' + heard + '"';
+    let correct = false;
+    for(const alt of allHeard){
+      if(checkAnswer(alt)){ correct = true; break; }
+    }
+    showResult(correct);
+  };
+  recognition.onerror = (e) => {
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+    if(e.error === 'no-speech') $('micStatus').textContent = 'No speech detected. Try again.';
+    else if(e.error === 'not-allowed') $('micStatus').textContent = 'Mic access denied. Use "Show answer".';
+    else $('micStatus').textContent = 'Error: ' + e.error;
+  };
+  recognition.onend = () => {
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+  };
+} else {
+  $('micStatus').textContent = '⚠ Voice not supported. Use Chrome/Edge or click "Show answer".';
+  $('micBtn').disabled = true;
+}
+
+$('micBtn').addEventListener('click', () => {
+  if(!recognition || answered) return;
+  if(isListening){ recognition.stop(); return; }
+  try{
+    isListening = true;
+    $('micBtn').classList.add('listening');
+    $('micStatus').textContent = '● Listening… speak your answer';
+    $('heardText').textContent = '';
+    recognition.start();
+  }catch(err){
+    isListening = false;
+    $('micBtn').classList.remove('listening');
+    $('micStatus').textContent = 'Could not start. Try again.';
+  }
+});
+
+// ============ TEXT TO SPEECH ============
+$('playBtn').addEventListener('click', () => {
+  const q = questions[current];
+  if(!window.speechSynthesis) return;
+  window.speechSynthesis.cancel();
+  const u = new SpeechSynthesisUtterance(q.q);
+  u.lang = 'en-US';
+  u.rate = 0.9;
+  window.speechSynthesis.speak(u);
+});
+
+// ============ CONTROLS ============
+$('revealBtn').addEventListener('click', () => {
+  showResult(false, true);
+});
+
+$('nextBtn').addEventListener('click', () => {
+  current++;
+  loadQuestion();
+});
+
+// ============ FINISH ============
+function finish(){
+  $('quizArea').style.display = 'none';
+  $('finishScreen').classList.add('show');
+  $('finalScore').textContent = score;
+  $('progress').style.width = '100%';
+  const pct = score/questions.length;
+  let msg = '';
+  if(pct >= 0.9) msg = 'Outstanding! You are a true word champion. Keep reading every single day.';
+  else if(pct >= 0.7) msg = 'Excellent work! Your English is growing strong. Just a little more practice and you will be perfect.';
+  else if(pct >= 0.5) msg = 'Good effort! Practice makes progress — try this workbook again tomorrow.';
+  else msg = 'Every champion starts somewhere. Read a story today, then come back and try again!';
+  $('finalMessage').textContent = msg;
+}
+
+loadQuestion();
+</script>
+</body>
+</html>
