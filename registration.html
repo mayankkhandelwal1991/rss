@@ -1,0 +1,286 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Registration Form</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,800&family=Tiro+Devanagari+Hindi&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #E8742C;
+    --deep: #6B1E0B;
+    --cream: #FBF4E4;
+    --ink: #1A1208;
+    --gold: #C8941A;
+    --line: rgba(107,30,11,0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(ellipse at top, rgba(232,116,44,0.12), transparent 60%),
+      var(--cream);
+    font-family: 'Fraunces', serif;
+    color: var(--ink);
+    padding: 24px 16px 48px;
+  }
+  .wrap { max-width: 520px; margin: 0 auto; }
+  .card {
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: 4px;
+    padding: 36px 28px;
+    box-shadow: 0 20px 50px -20px rgba(107,30,11,0.18);
+    position: relative;
+  }
+  .card::before, .card::after {
+    content: '';
+    position: absolute;
+    width: 18px; height: 18px;
+    border: 2px solid var(--saffron);
+  }
+  .card::before { top: 10px; left: 10px; border-right: none; border-bottom: none; }
+  .card::after { bottom: 10px; right: 10px; border-left: none; border-top: none; }
+
+  .ornament { color: var(--saffron); letter-spacing: 8px; font-size: 12px; text-align: center; margin-bottom: 8px; }
+  h1 {
+    font-weight: 800;
+    font-size: 30px;
+    line-height: 1.1;
+    letter-spacing: -0.02em;
+    color: var(--deep);
+    text-align: center;
+    margin-bottom: 6px;
+  }
+  .subtitle {
+    font-style: italic;
+    text-align: center;
+    color: var(--ink);
+    opacity: 0.65;
+    font-size: 14px;
+    margin-bottom: 28px;
+  }
+  .field { margin-bottom: 18px; }
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--deep);
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 6px;
+  }
+  label .req { color: var(--saffron); }
+  input, select {
+    width: 100%;
+    padding: 12px 14px;
+    border: 1px solid var(--line);
+    background: var(--cream);
+    font-family: 'Fraunces', serif;
+    font-size: 16px;
+    color: var(--ink);
+    border-radius: 2px;
+    transition: border-color 0.2s, background 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%236B1E0B' d='M6 8L0 0h12z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+  }
+  select, option {
+    font-family: 'Tiro Devanagari Hindi', 'Fraunces', serif;
+  }
+  input:focus, select:focus {
+    outline: none;
+    border-color: var(--saffron);
+    background: #fff;
+  }
+  button.submit {
+    width: 100%;
+    background: var(--deep);
+    color: var(--cream);
+    border: none;
+    padding: 16px;
+    font-family: 'Fraunces', serif;
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    margin-top: 12px;
+    transition: background 0.2s, transform 0.1s;
+  }
+  button.submit:hover { background: var(--saffron); }
+  button.submit:active { transform: scale(0.99); }
+  button.submit:disabled { opacity: 0.6; cursor: not-allowed; }
+
+  .status {
+    margin-top: 16px;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 2px;
+    display: none;
+  }
+  .status.show { display: block; }
+  .status.success { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+  .status.error   { background: #FFEBEE; color: #B71C1C; border: 1px solid #EF9A9A; }
+
+  .thanks { text-align: center; padding: 20px 0; }
+  .thanks h2 {
+    font-size: 28px;
+    color: var(--deep);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .thanks p { color: var(--ink); opacity: 0.7; font-style: italic; }
+  .checkmark {
+    width: 64px; height: 64px;
+    border: 2px solid var(--saffron);
+    border-radius: 50%;
+    margin: 0 auto 16px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--saffron);
+    font-size: 32px;
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="card">
+    <div class="ornament">✦ ✦ ✦</div>
+    <h1>Registration</h1>
+    <p class="subtitle">Please fill in your details</p>
+
+    <form id="regForm" autocomplete="on">
+      <div class="field">
+        <label for="name">Name <span class="req">*</span></label>
+        <input type="text" id="name" name="name" required maxlength="80" />
+      </div>
+
+      <div class="field">
+        <label for="mobile">Mobile Number <span class="req">*</span></label>
+        <input type="tel" id="mobile" name="mobile" required pattern="[0-9+\-\s]{7,15}" placeholder="10-digit mobile" />
+      </div>
+
+      <div class="field">
+        <label for="nagar">Nagar <span class="req">*</span></label>
+        <select id="nagar" name="nagar" required>
+          <option value="" disabled selected>-- नगर चुनें / Select Nagar --</option>
+          <option value="Sitapura Nagar">Sitapura Nagar</option>
+        </select>
+      </div>
+      
+      <div class="field">
+        <label for="shakha">Shakha <span class="req">*</span></label>
+        <select id="shakha" name="shakha" required>
+          <option value="" disabled selected>-- शाखा चुनें / Select Shakha --</option>
+          <option value="अटल शाखा">अटल शाखा</option>
+          <option value="गोवर्धन शाखा">गोवर्धन शाखा</option>
+          <option value="बलराम शाखा">बलराम शाखा</option>
+          <option value="बजरंग शाखा">बजरंग शाखा</option>
+          <option value="श्री राम शाखा">श्री राम शाखा</option>
+          <option value="सरल बिहारी शाखा">सरल बिहारी शाखा</option>
+          <option value="श्री कल्याण शाखा">श्री कल्याण शाखा</option>
+          <option value="गोविंद शाखा">गोविंद शाखा</option>
+          <option value="गोकुल मिलन">गोकुल मिलन</option>
+          <option value="गार्डन सिटी मिलन">गार्डन सिटी मिलन</option>
+        </select>
+      </div>
+
+      
+
+      <div class="field">
+        <label for="work">Work / Occupation</label>
+        <input type="text" id="work" name="work" maxlength="100" />
+      </div>
+
+      <div class="field">
+        <label for="shikshan">Shikshan (Education)</label>
+        <input type="text" id="shikshan" name="shikshan" maxlength="100" />
+      </div>
+
+      <div class="field">
+        <label for="dob">Date of Birth</label>
+        <input type="date" id="dob" name="dob" />
+      </div>
+
+      <button type="submit" class="submit" id="submitBtn">Submit</button>
+      <div class="status" id="status"></div>
+    </form>
+  </div>
+</div>
+
+<script>
+  // ============================================================
+  // PASTE YOUR GOOGLE APPS SCRIPT WEB APP URL HERE
+  // (the one ending in /exec)
+  // ============================================================
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwespocpcOcclfdal9vStY0frabU6Lr_EqMVr2NeAWojID3Gp-1eHKs6N4N1CNfl_hV4g/exec";
+
+  const form = document.getElementById('regForm');
+  const statusEl = document.getElementById('status');
+  const submitBtn = document.getElementById('submitBtn');
+  const card = document.getElementById('card');
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+
+    if (SCRIPT_URL.startsWith('PASTE_')) {
+      showStatus('Form not configured. Please set SCRIPT_URL in form.html.', 'error');
+      return;
+    }
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'Sending…';
+
+    const data = {
+      name:     form.name.value.trim(),
+      mobile:   form.mobile.value.trim(),
+      shakha:   form.shakha.value,
+      nagar:    form.nagar.value,
+      work:     form.work.value.trim(),
+      shikshan: form.shikshan.value.trim(),
+      dob:      form.dob.value
+    };
+
+    try {
+      const body = new URLSearchParams(data).toString();
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body
+      });
+      showThanks();
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'Submit';
+      showStatus('Could not send. Please check your connection and try again.', 'error');
+    }
+  });
+
+  function showStatus(msg, type) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status show ' + type;
+  }
+
+  function showThanks() {
+    card.innerHTML = `
+      <div class="thanks">
+        <div class="checkmark">✓</div>
+        <h2>Thank You / धन्यवाद</h2>
+        <p>Your details have been recorded.</p>
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>
