@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>शुभ विचार संस्था - जयपुर</title>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi:ital@0;1&family=Playfair+Display:wght@700&family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --saffron: #FF6B00;
+    --deep-red: #CC0000;
+    --navy: #1A237E;
+    --gold: #D4A017;
+    --cream: #FFF8F0;
+    --white: #FFFFFF;
+    --light-orange: #FFF3E0;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(145deg, #FFF8F0 0%, #FFE0B2 50%, #FFF3E0 100%);
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 0 0 40px;
+  }
+
+  /* Top stripe */
+  .top-bar {
+    width: 100%;
+    background: linear-gradient(90deg, var(--saffron), var(--deep-red));
+    padding: 6px 16px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .top-bar span {
+    color: white;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+  }
+
+  /* Card */
+  .card {
+    width: 92%;
+    max-width: 420px;
+    margin: 24px auto 0;
+    background: white;
+    border-radius: 24px;
+    box-shadow: 0 20px 60px rgba(200, 80, 0, 0.18), 0 4px 16px rgba(0,0,0,0.08);
+    overflow: hidden;
+    animation: rise 0.8s cubic-bezier(.22,1,.36,1) both;
+  }
+
+  @keyframes rise {
+    from { opacity:0; transform: translateY(30px); }
+    to   { opacity:1; transform: translateY(0); }
+  }
+
+  /* Header section */
+  .header {
+    background: linear-gradient(160deg, #fff 60%, #FFF3E0 100%);
+    padding: 28px 20px 20px;
+    text-align: center;
+    border-bottom: 3px solid var(--saffron);
+    position: relative;
+  }
+
+  .swastik {
+    font-size: 36px;
+    color: var(--deep-red);
+    display: block;
+    margin-bottom: 4px;
+    animation: pulse 2.5s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%,100% { transform: scale(1); }
+    50%      { transform: scale(1.08); }
+  }
+
+  .org-name {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 32px;
+    font-weight: 700;
+    color: var(--deep-red);
+    line-height: 1.1;
+    letter-spacing: 1px;
+    text-shadow: 1px 2px 6px rgba(200,0,0,0.12);
+  }
+
+  .org-sub {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 13px;
+    color: var(--saffron);
+    margin: 6px 0 2px;
+    letter-spacing: 0.5px;
+  }
+
+  .city {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 20px;
+    color: var(--navy);
+    font-weight: 700;
+    letter-spacing: 2px;
+    margin-top: 2px;
+  }
+
+  /* Flag stripe */
+  .flag-stripe {
+    display: flex;
+    height: 5px;
+    margin: 14px 0 0;
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .flag-stripe div { flex: 1; }
+  .fs-saffron { background: #FF9933; }
+  .fs-white   { background: #FFFFFF; border: 0.5px solid #ddd; }
+  .fs-green   { background: #138808; }
+
+  /* Reg info */
+  .reg-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 10px 20px;
+    background: var(--light-orange);
+    font-size: 11px;
+    color: var(--navy);
+    font-weight: 600;
+  }
+
+  /* Info blocks */
+  .info-section {
+    padding: 22px 20px;
+  }
+
+  .section-title {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--saffron);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .section-title::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(to right, var(--saffron), transparent);
+  }
+
+  .info-row {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    margin-bottom: 16px;
+    padding: 12px 14px;
+    background: var(--cream);
+    border-radius: 12px;
+    border-left: 3px solid var(--saffron);
+    transition: transform 0.2s;
+  }
+  .info-row:active { transform: scale(0.98); }
+
+  .info-icon {
+    width: 36px;
+    height: 36px;
+    border-radius: 10px;
+    background: linear-gradient(135deg, var(--saffron), var(--deep-red));
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    font-size: 16px;
+    color: white;
+  }
+
+  .info-label {
+    font-size: 10px;
+    color: #999;
+    font-weight: 600;
+    letter-spacing: 0.8px;
+    text-transform: uppercase;
+  }
+  .info-value {
+    font-size: 14px;
+    color: var(--navy);
+    font-weight: 600;
+    margin-top: 2px;
+    line-height: 1.4;
+  }
+  .info-value a {
+    color: var(--deep-red);
+    text-decoration: none;
+    font-weight: 700;
+  }
+
+  /* Motto */
+  .motto {
+    margin: 0 20px 22px;
+    padding: 16px 18px;
+    background: linear-gradient(135deg, var(--deep-red), #8B0000);
+    border-radius: 16px;
+    text-align: center;
+    color: white;
+  }
+  .motto-text {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 17px;
+    font-weight: 700;
+    line-height: 1.5;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+  }
+  .motto-dots {
+    color: var(--gold);
+    font-size: 18px;
+  }
+
+  /* Footer */
+  .footer {
+    background: var(--navy);
+    padding: 14px 20px;
+    text-align: center;
+  }
+  .footer p {
+    color: rgba(255,255,255,0.7);
+    font-size: 11px;
+    line-height: 1.8;
+  }
+  .footer a {
+    color: var(--gold);
+    font-weight: 600;
+    text-decoration: none;
+  }
+
+  /* Divider */
+  .divider {
+    height: 1px;
+    background: linear-gradient(to right, transparent, #ddd, transparent);
+    margin: 0 20px 20px;
+  }
+
+  /* QR Section */
+  .qr-card {
+    width: 92%;
+    max-width: 420px;
+    margin: 20px auto 0;
+    background: white;
+    border-radius: 24px;
+    padding: 24px 20px;
+    box-shadow: 0 10px 30px rgba(200, 80, 0, 0.12);
+    text-align: center;
+    animation: rise 0.8s 0.2s cubic-bezier(.22,1,.36,1) both;
+  }
+  .qr-title {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--navy);
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+  }
+  #qrcode {
+    display: inline-block;
+    padding: 12px;
+    background: white;
+    border-radius: 16px;
+    border: 3px solid var(--saffron);
+    box-shadow: 0 4px 20px rgba(255,107,0,0.2);
+  }
+  #qrcode canvas, #qrcode img {
+    border-radius: 8px;
+    display: block;
+  }
+  .qr-note {
+    font-size: 11px;
+    color: #999;
+    margin-top: 12px;
+  }
+</style>
+</head>
+<body>
+
+<div class="top-bar">
+  <span>🇮🇳 हमारा हिन्दुस्तान</span>
+  <span>शुभ विचारों वाला</span>
+</div>
+
+<div class="card">
+  <div class="header">
+    <span class="swastik">🕉</span>
+    <div class="org-name">शुभ विचार संस्था</div>
+    <div class="org-sub">(A Right Thinking)</div>
+    <div class="city">जयपुर</div>
+    <div class="flag-stripe">
+      <div class="fs-saffron"></div>
+      <div class="fs-white"></div>
+      <div class="fs-green"></div>
+    </div>
+  </div>
+
+  <div class="reg-row">
+    <span>रजि.नं. : 401/2010–2011</span>
+    <span>क्रमांक / दिनांक</span>
+  </div>
+
+  <div class="info-section">
+    <div class="section-title">संस्था की जानकारी</div>
+
+    <div class="info-row">
+      <div class="info-icon">📍</div>
+      <div>
+        <div class="info-label">पता</div>
+        <div class="info-value">रजि. का.: 60, मलवा, टोंक रोड़,<br>शिवदासपुरा, जयपुर – 303903</div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">📞</div>
+      <div>
+        <div class="info-label">मोबाइल</div>
+        <div class="info-value"><a href="tel:9928623473">9928623473</a></div>
+      </div>
+    </div>
+
+    <div class="info-row">
+      <div class="info-icon">🌐</div>
+      <div>
+        <div class="info-label">वेबसाइट</div>
+        <div class="info-value"><a href="https://www.shubhvichar.org" target="_blank">www.shubhvichar.org</a></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <div class="motto">
+    <div class="motto-text">
+      शुभ सोचो, शुभ बोलो,<br>
+      शुभ करो, शुभ देखो
+      <span class="motto-dots"> .....</span>
+    </div>
+  </div>
+
+  <div class="footer">
+    <p>
+      रजि. का.: 60, मलवा, टोंक रोड़, शिवदासपुरा, जयपुर – 303903<br>
+      मो. <a href="tel:9928623473">9928623473</a> &nbsp;|&nbsp;
+      <a href="https://www.shubhvichar.org" target="_blank">shubhvichar.org</a>
+    </p>
+  </div>
+</div>
+
+<!-- QR Code Section -->
+<div class="qr-card">
+  <div class="qr-title">📲 QR Code — इस पेज को स्कैन करें</div>
+  <div id="qrcode"></div>
+  <p class="qr-note">इस QR कोड को स्कैन करके संस्था की जानकारी देखें</p>
+</div>
+
+<!-- QR Code Library
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  // Generate QR code pointing to this page (or shubhvichar.org)
+  const qrTarget = window.location.href.includes('localhost') || window.location.href.startsWith('file:')
+    ? 'https://www.shubhvichar.org'
+    : window.location.href;
+
+  new QRCode(document.getElementById("qrcode"), {
+    text: qrTarget,
+    width: 200,
+    height: 200,
+    colorDark: "#1A237E",
+    colorLight: "#FFFFFF",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+ -->
+</body>
+</html>
