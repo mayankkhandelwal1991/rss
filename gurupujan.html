@@ -641,7 +641,8 @@
 </div>
 
 <script>
-const CLAUDE_API = "https://api.anthropic.com/v1/messages";
+	const CLAUDE_API = "https://proud-surf-5c06.mkhandelwal.workers.dev";
+
 const MODEL = "claude-sonnet-4-20250514";
 
 let selectedFiles = [];
@@ -964,7 +965,6 @@ Rules:
 - For donation: capture the exact value (e.g. 500, 1000, 51) or "पुष्प" if flower/symbolic donation, or "-" if dash.
 - Do not add any extra text — output ONLY the JSON array.`;
 
-const CLAUDE_API = "https://proud-surf-5c06.mkhandelwal.workers.dev";
 
   const response = await fetch(CLAUDE_API, {
     method: 'POST',
