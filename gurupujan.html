@@ -1,0 +1,1057 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>RSS Register Extractor</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;500;600;700&family=Noto+Sans+Devanagari:wght@300;400;500&display=swap');
+
+  :root {
+    --saffron: #FF6B1A;
+    --deep-saffron: #CC4400;
+    --white: #FFF8F0;
+    --cream: #FDF2E0;
+    --dark: #1A0E00;
+    --mid: #3D2200;
+    --text-light: #7A5230;
+    --green: #2D6A2D;
+    --border: #E8C89A;
+    --card-bg: rgba(255, 248, 240, 0.95);
+    --success: #2D6A2D;
+    --shadow: 0 8px 32px rgba(204, 68, 0, 0.15);
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    font-family: 'Rajdhani', sans-serif;
+    background: linear-gradient(135deg, #1A0E00 0%, #3D2200 50%, #1A0E00 100%);
+    min-height: 100vh;
+    color: var(--dark);
+    padding: 20px;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23FF6B1A' fill-opacity='0.04'%3E%3Ccircle cx='30' cy='30' r='4'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .container {
+    max-width: 1100px;
+    margin: 0 auto;
+    position: relative;
+    z-index: 1;
+  }
+
+  header {
+    text-align: center;
+    padding: 36px 0 28px;
+  }
+
+  .org-badge {
+    display: inline-block;
+    background: linear-gradient(135deg, var(--saffron), var(--deep-saffron));
+    color: white;
+    padding: 4px 16px;
+    border-radius: 2px;
+    font-size: 11px;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  h1 {
+    font-size: clamp(28px, 5vw, 48px);
+    font-weight: 700;
+    color: var(--white);
+    letter-spacing: 1px;
+    line-height: 1.1;
+  }
+
+  h1 span {
+    color: var(--saffron);
+  }
+
+  .subtitle {
+    color: #B08060;
+    font-size: 14px;
+    margin-top: 8px;
+    font-weight: 400;
+    font-family: 'Noto Sans Devanagari', sans-serif;
+  }
+
+  .card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 28px;
+    margin-bottom: 20px;
+    border: 1px solid var(--border);
+    box-shadow: var(--shadow);
+  }
+
+  .card-title {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--deep-saffron);
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .card-title::before {
+    content: '';
+    display: inline-block;
+    width: 4px;
+    height: 18px;
+    background: var(--saffron);
+    border-radius: 2px;
+  }
+
+  /* Upload Zone */
+  .upload-zone {
+    border: 2.5px dashed var(--border);
+    border-radius: 10px;
+    padding: 40px 20px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    background: rgba(255, 107, 26, 0.03);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .upload-zone:hover, .upload-zone.drag-over {
+    border-color: var(--saffron);
+    background: rgba(255, 107, 26, 0.07);
+  }
+
+  .upload-zone input[type="file"] {
+    position: absolute;
+    inset: 0;
+    opacity: 0;
+    cursor: pointer;
+    font-size: 0;
+  }
+
+  .upload-icon {
+    font-size: 48px;
+    margin-bottom: 12px;
+    display: block;
+    filter: drop-shadow(0 2px 8px rgba(255,107,26,0.3));
+  }
+
+  .upload-text {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--mid);
+  }
+
+  .upload-sub {
+    font-size: 13px;
+    color: var(--text-light);
+    margin-top: 4px;
+  }
+
+  /* Preview Grid */
+  .preview-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+    gap: 12px;
+    margin-top: 16px;
+  }
+
+  .preview-item {
+    position: relative;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 2px solid var(--border);
+    aspect-ratio: 3/4;
+    background: #f5ede0;
+  }
+
+  .preview-item img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .preview-item .remove-btn {
+    position: absolute;
+    top: 4px;
+    right: 4px;
+    background: rgba(204, 68, 0, 0.9);
+    color: white;
+    border: none;
+    border-radius: 50%;
+    width: 22px;
+    height: 22px;
+    cursor: pointer;
+    font-size: 14px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+  }
+
+  .preview-item .img-name {
+    position: absolute;
+    bottom: 0;
+    left: 0; right: 0;
+    background: rgba(26,14,0,0.75);
+    color: #fff;
+    font-size: 9px;
+    padding: 3px 5px;
+    truncate: ellipsis;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  /* Button */
+  .btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 28px;
+    border: none;
+    border-radius: 8px;
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+
+  .btn-primary {
+    background: linear-gradient(135deg, var(--saffron), var(--deep-saffron));
+    color: white;
+    box-shadow: 0 4px 16px rgba(255, 107, 26, 0.4);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    transform: translateY(-2px);
+    box-shadow: 0 8px 24px rgba(255, 107, 26, 0.5);
+  }
+
+  .btn-primary:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  .btn-secondary {
+    background: white;
+    color: var(--deep-saffron);
+    border: 2px solid var(--saffron);
+  }
+
+  .btn-secondary:hover {
+    background: rgba(255,107,26,0.05);
+  }
+
+  .btn-green {
+    background: linear-gradient(135deg, #2D8A2D, #1A5E1A);
+    color: white;
+    box-shadow: 0 4px 16px rgba(45, 106, 45, 0.4);
+  }
+
+  .btn-green:hover {
+    transform: translateY(-2px);
+  }
+
+  .actions {
+    display: flex;
+    gap: 12px;
+    flex-wrap: wrap;
+    margin-top: 16px;
+  }
+
+  /* Progress */
+  .progress-container {
+    margin-top: 16px;
+  }
+
+  .progress-bar-wrap {
+    background: #EDD5B8;
+    border-radius: 100px;
+    height: 8px;
+    overflow: hidden;
+    margin: 8px 0;
+  }
+
+  .progress-bar {
+    height: 100%;
+    background: linear-gradient(90deg, var(--saffron), var(--deep-saffron));
+    border-radius: 100px;
+    transition: width 0.4s ease;
+    width: 0%;
+  }
+
+  .progress-text {
+    font-size: 13px;
+    color: var(--text-light);
+  }
+
+  /* Log */
+  .log-box {
+    background: #1A0E00;
+    border-radius: 8px;
+    padding: 14px 16px;
+    font-family: monospace;
+    font-size: 12px;
+    color: #FFA559;
+    max-height: 150px;
+    overflow-y: auto;
+    margin-top: 12px;
+    line-height: 1.7;
+  }
+
+  .log-box .log-ok { color: #5FBF5F; }
+  .log-box .log-err { color: #FF5555; }
+  .log-box .log-info { color: #FFA559; }
+
+  /* CSV Output */
+  .csv-section {
+    display: none;
+  }
+
+  .csv-section.visible {
+    display: block;
+  }
+
+  .stats-row {
+    display: flex;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 16px;
+  }
+
+  .stat-chip {
+    background: linear-gradient(135deg, rgba(255,107,26,0.1), rgba(204,68,0,0.05));
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 10px 18px;
+    text-align: center;
+  }
+
+  .stat-chip .num {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--saffron);
+  }
+
+  .stat-chip .lbl {
+    font-size: 11px;
+    color: var(--text-light);
+    text-transform: uppercase;
+    letter-spacing: 1px;
+  }
+
+  .csv-textarea {
+    width: 100%;
+    min-height: 300px;
+    background: #1A0E00;
+    color: #E8C89A;
+    border: 1px solid #5A3A1A;
+    border-radius: 8px;
+    padding: 14px;
+    font-family: 'Courier New', monospace;
+    font-size: 12px;
+    line-height: 1.6;
+    resize: vertical;
+    outline: none;
+  }
+
+  /* Table Preview */
+  .table-wrap {
+    overflow-x: auto;
+    margin-top: 16px;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 13px;
+  }
+
+  thead tr {
+    background: linear-gradient(135deg, var(--saffron), var(--deep-saffron));
+    color: white;
+  }
+
+  thead th {
+    padding: 10px 14px;
+    text-align: left;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    white-space: nowrap;
+  }
+
+  tbody tr:nth-child(even) {
+    background: rgba(255,107,26,0.04);
+  }
+
+  tbody tr:hover {
+    background: rgba(255,107,26,0.08);
+  }
+
+  tbody td {
+    padding: 9px 14px;
+    border-bottom: 1px solid #EDD5B8;
+    color: var(--mid);
+    font-family: 'Noto Sans Devanagari', sans-serif;
+    font-size: 12px;
+  }
+
+  .empty-state {
+    text-align: center;
+    padding: 60px 20px;
+    color: #B08060;
+    font-size: 15px;
+  }
+
+  .spinner {
+    display: inline-block;
+    width: 16px; height: 16px;
+    border: 2.5px solid rgba(255,255,255,0.3);
+    border-top-color: white;
+    border-radius: 50%;
+    animation: spin 0.8s linear infinite;
+    vertical-align: middle;
+  }
+
+  @keyframes spin { to { transform: rotate(360deg); } }
+
+  .tab-row {
+    display: flex;
+    gap: 0;
+    border-bottom: 2px solid var(--border);
+    margin-bottom: 16px;
+  }
+
+  .tab {
+    padding: 9px 20px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-light);
+    border-bottom: 2.5px solid transparent;
+    margin-bottom: -2px;
+    transition: all 0.2s;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+  }
+
+  .tab.active {
+    color: var(--deep-saffron);
+    border-bottom-color: var(--saffron);
+  }
+
+  .tab-panel { display: none; }
+  .tab-panel.active { display: block; }
+
+  /* Concurrency Row */
+  .concurrency-row {
+    margin-top: 16px;
+    background: rgba(255,107,26,0.06);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 12px 16px;
+  }
+
+  .conc-label {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 600;
+    color: var(--mid);
+  }
+
+  .conc-label input[type="range"] {
+    flex: 1;
+    accent-color: var(--saffron);
+    height: 4px;
+    cursor: pointer;
+  }
+
+  .conc-val {
+    min-width: 90px;
+    color: var(--saffron);
+    font-weight: 700;
+    font-size: 14px;
+  }
+
+  .conc-hint {
+    font-size: 12px;
+    color: var(--text-light);
+    margin-top: 6px;
+  }
+
+  .btn-orange {
+    background: linear-gradient(135deg, #E07B00, #A55A00);
+    color: white;
+  }
+
+  .btn-danger {
+    background: linear-gradient(135deg, #C0392B, #8B0000);
+    color: white;
+  }
+
+  /* Status badge on preview images */
+  .preview-item .status-badge {
+    position: absolute;
+    bottom: 20px;
+    left: 0; right: 0;
+    text-align: center;
+    color: white;
+    font-size: 10px;
+    font-weight: 700;
+    padding: 3px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+  }
+
+  .preview-item[data-status="processing"] {
+    border-color: #FFA500;
+    box-shadow: 0 0 8px rgba(255,165,0,0.5);
+  }
+
+  .preview-item[data-status="done"] {
+    border-color: #2D8A2D;
+  }
+
+  .preview-item[data-status="error"] {
+    border-color: #C0392B;
+  }
+
+  /* Speed meter */
+  .speed-meter {
+    display: flex;
+    gap: 10px;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+  }
+
+  .speed-chip {
+    background: rgba(255,107,26,0.1);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 5px 12px;
+    font-size: 12px;
+    color: var(--mid);
+    font-weight: 600;
+  }
+
+  .speed-chip span { color: var(--saffron); }
+
+
+    .card { padding: 18px; }
+    h1 { font-size: 26px; }
+    .actions { flex-direction: column; }
+    .btn { width: 100%; justify-content: center; }
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+  <header>
+    <div class="org-badge">राष्ट्रीय स्वयंसेवक संघ</div>
+    <h1>Register <span>Data Extractor</span></h1>
+    <p class="subtitle">श्री गुरु पूजन सूची — Upload images to extract member data as CSV</p>
+  </header>
+
+  <!-- Upload Card -->
+  <div class="card">
+    <div class="card-title">Upload Register Images</div>
+    <div class="upload-zone" id="uploadZone">
+      <input type="file" id="fileInput" accept="image/*" multiple>
+      <span class="upload-icon">🖼️</span>
+      <div class="upload-text">Drop images here or click to browse</div>
+      <div class="upload-sub">Supports JPG, PNG, WebP — multiple images allowed</div>
+    </div>
+    <div class="preview-grid" id="previewGrid"></div>
+    <div class="concurrency-row">
+      <label class="conc-label">
+        <span>⚡ Parallel Speed:</span>
+        <input type="range" id="concurrencySlider" min="1" max="10" value="5" step="1">
+        <span id="concurrencyVal" class="conc-val">5 at a time</span>
+      </label>
+      <div class="conc-hint" id="etaHint">~50 images ≈ 4–5 min at this speed</div>
+    </div>
+    <div class="actions">
+      <button class="btn btn-primary" id="extractBtn" disabled>
+        <span id="extractBtnIcon">⚡</span> Extract Data
+      </button>
+      <button class="btn btn-orange" id="pauseBtn" style="display:none">⏸ Pause</button>
+      <button class="btn btn-danger" id="cancelBtn" style="display:none">🛑 Cancel</button>
+      <button class="btn btn-secondary" id="clearBtn" style="display:none">✕ Clear All</button>
+    </div>
+  </div>
+
+  <!-- Progress Card -->
+  <div class="card" id="progressCard" style="display:none">
+    <div class="card-title">Processing</div>
+    <div class="progress-container">
+      <div class="progress-text" id="progressText">Initializing…</div>
+      <div class="progress-bar-wrap"><div class="progress-bar" id="progressBar"></div></div>
+    </div>
+    <div class="log-box" id="logBox"></div>
+  </div>
+
+  <!-- Results Card -->
+  <div class="card csv-section" id="resultsCard">
+    <div class="card-title">Extracted Data</div>
+
+    <div class="stats-row" id="statsRow"></div>
+
+    <div class="tab-row">
+      <div class="tab active" data-tab="table">📋 Table View</div>
+      <div class="tab" data-tab="csv">📄 CSV Raw</div>
+    </div>
+
+    <div class="tab-panel active" id="tablePanel">
+      <div class="table-wrap" id="tableWrap"></div>
+    </div>
+
+    <div class="tab-panel" id="csvPanel">
+      <textarea class="csv-textarea" id="csvOutput" readonly></textarea>
+    </div>
+
+    <div class="actions" style="margin-top:20px">
+      <button class="btn btn-green" id="downloadBtn">⬇ Download CSV</button>
+      <button class="btn btn-secondary" id="copyBtn">📋 Copy CSV</button>
+    </div>
+  </div>
+
+</div>
+
+<script>
+const CLAUDE_API = "https://api.anthropic.com/v1/messages";
+const MODEL = "claude-sonnet-4-20250514";
+
+let selectedFiles = [];
+let allRows = [];
+let csvString = "";
+
+const fileInput = document.getElementById('fileInput');
+const uploadZone = document.getElementById('uploadZone');
+const previewGrid = document.getElementById('previewGrid');
+const extractBtn = document.getElementById('extractBtn');
+const clearBtn = document.getElementById('clearBtn');
+const progressCard = document.getElementById('progressCard');
+const progressText = document.getElementById('progressText');
+const progressBar = document.getElementById('progressBar');
+const logBox = document.getElementById('logBox');
+const resultsCard = document.getElementById('resultsCard');
+const csvOutput = document.getElementById('csvOutput');
+const tableWrap = document.getElementById('tableWrap');
+const statsRow = document.getElementById('statsRow');
+const downloadBtn = document.getElementById('downloadBtn');
+const copyBtn = document.getElementById('copyBtn');
+
+// Drag & drop
+uploadZone.addEventListener('dragover', e => { e.preventDefault(); uploadZone.classList.add('drag-over'); });
+uploadZone.addEventListener('dragleave', () => uploadZone.classList.remove('drag-over'));
+uploadZone.addEventListener('drop', e => {
+  e.preventDefault();
+  uploadZone.classList.remove('drag-over');
+  handleFiles([...e.dataTransfer.files]);
+});
+fileInput.addEventListener('change', () => handleFiles([...fileInput.files]));
+
+function handleFiles(files) {
+  files.filter(f => f.type.startsWith('image/')).forEach(f => {
+    if (!selectedFiles.find(x => x.name === f.name && x.size === f.size)) {
+      selectedFiles.push(f);
+    }
+  });
+  renderPreviews();
+}
+
+function renderPreviews() {
+  previewGrid.innerHTML = '';
+  selectedFiles.forEach((f, i) => {
+    const url = URL.createObjectURL(f);
+    const div = document.createElement('div');
+    div.className = 'preview-item';
+    div.innerHTML = `
+      <img src="${url}" alt="${f.name}">
+      <button class="remove-btn" data-i="${i}">×</button>
+      <div class="img-name">${f.name}</div>`;
+    previewGrid.appendChild(div);
+  });
+  previewGrid.querySelectorAll('.remove-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      selectedFiles.splice(+btn.dataset.i, 1);
+      renderPreviews();
+    });
+  });
+  extractBtn.disabled = selectedFiles.length === 0;
+  clearBtn.style.display = selectedFiles.length ? 'inline-flex' : 'none';
+}
+
+// Concurrency slider
+const slider = document.getElementById('concurrencySlider');
+const concVal = document.getElementById('concurrencyVal');
+const etaHint = document.getElementById('etaHint');
+
+const ETA_TABLE = {1:'~20 min',2:'~10 min',3:'~7 min',4:'~6 min',5:'~4–5 min',6:'~4 min',7:'~3.5 min',8:'~3 min',9:'~2.5 min',10:'~2 min'};
+
+function updateSliderDisplay() {
+  const v = parseInt(slider.value);
+  concVal.textContent = v + (v === 1 ? ' at a time (slow)' : v >= 8 ? ' at a time (max)' : ' at a time');
+  etaHint.textContent = `~50 images ≈ ${ETA_TABLE[v] || '~2 min'} at this speed`;
+}
+slider.addEventListener('input', updateSliderDisplay);
+updateSliderDisplay();
+
+clearBtn.addEventListener('click', () => {
+  selectedFiles = [];
+  fileInput.value = '';
+  renderPreviews();
+  resultsCard.classList.remove('visible');
+  progressCard.style.display = 'none';
+  allRows = [];
+  csvString = '';
+});
+
+// Tabs
+document.querySelectorAll('.tab').forEach(tab => {
+  tab.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+    tab.classList.add('active');
+    document.getElementById(tab.dataset.tab + 'Panel').classList.add('active');
+  });
+});
+
+function log(msg, type = 'info') {
+  const line = document.createElement('div');
+  line.className = `log-${type}`;
+  line.textContent = `[${new Date().toLocaleTimeString()}] ${msg}`;
+  logBox.appendChild(line);
+  logBox.scrollTop = logBox.scrollHeight;
+}
+
+function setProgress(pct, msg) {
+  progressBar.style.width = pct + '%';
+  progressText.textContent = msg;
+}
+
+async function fileToBase64(file) {
+  return new Promise((res, rej) => {
+    const r = new FileReader();
+    r.onload = () => res(r.result.split(',')[1]);
+    r.onerror = rej;
+    r.readAsDataURL(file);
+  });
+}
+
+// ── Concurrency & state ──────────────────────────────────────────
+let isPaused = false;
+let isCancelled = false;
+let pauseResolve = null;
+let completedCount = 0;
+let startTime = 0;
+
+function getConcurrency() {
+  return parseInt(document.getElementById('concurrencySlider').value) || 5;
+}
+
+function waitIfPaused() {
+  if (!isPaused) return Promise.resolve();
+  return new Promise(res => { pauseResolve = res; });
+}
+
+// ── Extract All (parallel) ───────────────────────────────────────
+extractBtn.addEventListener('click', extractAll);
+
+async function extractAll() {
+  if (!selectedFiles.length) return;
+
+  isPaused = false;
+  isCancelled = false;
+  completedCount = 0;
+  allRows = [];
+  startTime = Date.now();
+
+  extractBtn.disabled = true;
+  extractBtn.innerHTML = '<span class="spinner"></span> Processing…';
+  document.getElementById('pauseBtn').style.display = 'inline-flex';
+  document.getElementById('cancelBtn').style.display = 'inline-flex';
+  progressCard.style.display = 'block';
+  logBox.innerHTML = '';
+  updateImageStatuses('pending');
+
+  const total = selectedFiles.length;
+  const concurrency = getConcurrency();
+  log(`Starting — ${total} images, ${concurrency} parallel at a time`, 'info');
+
+  // Work queue
+  const queue = selectedFiles.map((f, i) => ({ f, i }));
+  let qIndex = 0;
+
+  async function worker() {
+    while (true) {
+      await waitIfPaused();
+      if (isCancelled) break;
+
+      const item = queue[qIndex++];
+      if (!item) break;
+
+      const { f, i } = item;
+      setImageStatus(i, 'processing');
+
+      try {
+        const b64 = await fileToBase64(f);
+        if (isCancelled) break;
+        await waitIfPaused();
+
+        const rows = await extractFromImage(b64, f.type || 'image/jpeg', f.name);
+        allRows.push(...rows);
+        completedCount++;
+        setImageStatus(i, 'done', rows.length);
+        log(`✓ [${i+1}/${total}] ${f.name} → ${rows.length} records`, 'ok');
+      } catch (err) {
+        completedCount++;
+        setImageStatus(i, 'error');
+        log(`✗ [${i+1}/${total}] ${f.name}: ${err.message}`, 'err');
+      }
+
+      updateProgress(total);
+    }
+  }
+
+  // Launch N workers in parallel
+  const workers = Array.from({ length: Math.min(concurrency, total) }, () => worker());
+  await Promise.all(workers);
+
+  if (isCancelled) {
+    log('⚠ Cancelled by user.', 'err');
+    setProgress(0, 'Cancelled.');
+  } else {
+    setProgress(100, `✅ Done! ${allRows.length} records from ${completedCount} images.`);
+    log(`All done — ${allRows.length} total records in ${((Date.now()-startTime)/1000).toFixed(1)}s`, 'ok');
+    buildCSV();
+    renderTable();
+    renderStats();
+    resultsCard.classList.add('visible');
+    resultsCard.scrollIntoView({ behavior: 'smooth' });
+  }
+
+  extractBtn.disabled = false;
+  extractBtn.innerHTML = '⚡ Extract Data';
+  document.getElementById('pauseBtn').style.display = 'none';
+  document.getElementById('cancelBtn').style.display = 'none';
+}
+
+function updateProgress(total) {
+  const pct = Math.round((completedCount / total) * 100);
+  const elapsed = (Date.now() - startTime) / 1000;
+  const rate = completedCount / elapsed;
+  const remaining = total - completedCount;
+  const eta = rate > 0 ? Math.round(remaining / rate) : 0;
+  const etaStr = eta > 60 ? `${Math.floor(eta/60)}m ${eta%60}s` : `${eta}s`;
+  setProgress(pct, `${completedCount}/${total} done · ${rate.toFixed(1)} img/s · ETA: ${etaStr}`);
+}
+
+// ── Pause / Resume / Cancel ──────────────────────────────────────
+document.getElementById('pauseBtn').addEventListener('click', () => {
+  isPaused = !isPaused;
+  const btn = document.getElementById('pauseBtn');
+  if (isPaused) {
+    btn.textContent = '▶ Resume';
+    btn.style.background = '#2D8A2D';
+    log('⏸ Paused — click Resume to continue.', 'info');
+  } else {
+    btn.textContent = '⏸ Pause';
+    btn.style.background = '';
+    log('▶ Resumed.', 'ok');
+    if (pauseResolve) { pauseResolve(); pauseResolve = null; }
+  }
+});
+
+document.getElementById('cancelBtn').addEventListener('click', () => {
+  isCancelled = true;
+  isPaused = false;
+  if (pauseResolve) { pauseResolve(); pauseResolve = null; }
+  log('🛑 Cancel requested…', 'err');
+});
+
+// ── Per-image status grid ────────────────────────────────────────
+function updateImageStatuses(state) {
+  previewGrid.querySelectorAll('.preview-item').forEach(el => {
+    el.dataset.status = state;
+    const badge = el.querySelector('.status-badge');
+    if (badge) badge.remove();
+  });
+}
+
+function setImageStatus(i, status, count) {
+  const items = previewGrid.querySelectorAll('.preview-item');
+  const el = items[i];
+  if (!el) return;
+  el.dataset.status = status;
+  let badge = el.querySelector('.status-badge');
+  if (!badge) {
+    badge = document.createElement('div');
+    badge.className = 'status-badge';
+    el.appendChild(badge);
+  }
+  if (status === 'processing') {
+    badge.innerHTML = '<span class="spinner" style="border-color:rgba(255,255,255,0.3);border-top-color:#fff;width:12px;height:12px;border-width:2px"></span>';
+    badge.style.background = 'rgba(255,165,0,0.9)';
+  } else if (status === 'done') {
+    badge.textContent = `✓ ${count}`;
+    badge.style.background = 'rgba(45,138,45,0.92)';
+  } else if (status === 'error') {
+    badge.textContent = '✗';
+    badge.style.background = 'rgba(200,40,40,0.92)';
+  } else {
+    badge.textContent = '⏳';
+    badge.style.background = 'rgba(80,60,30,0.7)';
+  }
+}
+
+async function extractFromImage(b64, mediaType, filename) {
+  const prompt = `You are extracting data from a handwritten register of Rashtriya Swayamsevak Sangh (RSS).
+The register is titled "श्री गुरु पूजन सूची" (Shri Guru Pujan Suchi).
+
+STEP 1 — Read the TOP HEADER of the register page carefully. Look for:
+- शाखाः / शाखा (Shakha name) — the name of the RSS Shakha branch written near the top
+- नगर / स्थान / महाविद्यालय (Nagar or Sthan name) — the locality/place/area name written at the top left
+- स्थान (Sthan) — sometimes written separately as the venue/location
+- तिथि (Date) — the date written at the top right (e.g. 13 July 25, 12/07/2025, 16-7-25)
+
+STEP 2 — Extract ALL data rows from the table. The table has columns:
+क्र.सं. (Serial No), स्वयंसेवक का नाम व पूरा पता (Name & Address), दूरभाष/Phone, जन्म तिथि/आयु (DOB/Age), समर्पण राशि (Donation Amount), विशेष (Remarks).
+
+Output ONLY a JSON array (no markdown, no explanation, no preamble) where each object has:
+{
+  "serial_no": "...",
+  "shakha_name": "...",
+  "nagar_name": "...",
+  "sthan": "...",
+  "date": "...",
+  "name": "...",
+  "address": "...",
+  "phone": "...",
+  "age": "...",
+  "donation": "...",
+  "remarks": "...",
+  "source_image": "${filename}"
+}
+
+Rules:
+- shakha_name, nagar_name, sthan, date — read from the PAGE HEADER and repeat the same value for every row on this page.
+- If a field is not visible or blank, use empty string "".
+- For names and addresses in Hindi/Devanagari, write them as-is.
+- For donation: capture the exact value (e.g. 500, 1000, 51) or "पुष्प" if flower/symbolic donation, or "-" if dash.
+- Do not add any extra text — output ONLY the JSON array.`;
+
+  const response = await fetch(CLAUDE_API, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({
+      model: MODEL,
+      max_tokens: 4096,
+      messages: [{
+        role: 'user',
+        content: [
+          { type: 'image', source: { type: 'base64', media_type: mediaType, data: b64 } },
+          { type: 'text', text: prompt }
+        ]
+      }]
+    })
+  });
+
+  if (!response.ok) {
+    const err = await response.json().catch(() => ({}));
+    throw new Error(err.error?.message || `HTTP ${response.status}`);
+  }
+
+  const data = await response.json();
+  const text = (data.content || []).map(b => b.text || '').join('').trim();
+
+  // Strip markdown fences if any
+  const clean = text.replace(/```json|```/gi, '').trim();
+  const parsed = JSON.parse(clean);
+  return Array.isArray(parsed) ? parsed : [];
+}
+
+const CSV_HEADERS = ['serial_no','shakha_name','nagar_name','sthan','date','name','address','phone','age','donation','remarks','source_image'];
+const CSV_LABELS  = ['Serial No','Shakha (शाखा)','Nagar (नगर)','Sthan (स्थान)','Date (तिथि)','Name (नाम)','Address (पता)','Phone','Age (आयु)','Donation (राशि)','Remarks (विशेष)','Source Image'];
+
+function buildCSV() {
+  const escape = v => `"${String(v ?? '').replace(/"/g,'""')}"`;
+  const lines = [CSV_LABELS.map(escape).join(',')];
+  allRows.forEach(row => {
+    lines.push(CSV_HEADERS.map(h => escape(row[h] ?? '')).join(','));
+  });
+  csvString = lines.join('\n');
+  csvOutput.value = csvString;
+}
+
+function renderTable() {
+  if (!allRows.length) {
+    tableWrap.innerHTML = '<div class="empty-state">No data extracted.</div>';
+    return;
+  }
+  let html = '<table><thead><tr>' + CSV_LABELS.map(l => `<th>${l}</th>`).join('') + '</tr></thead><tbody>';
+  allRows.forEach(row => {
+    html += '<tr>' + CSV_HEADERS.map(h => `<td>${row[h] ?? ''}</td>`).join('') + '</tr>';
+  });
+  html += '</tbody></table>';
+  tableWrap.innerHTML = html;
+}
+
+function renderStats() {
+  const images = [...new Set(allRows.map(r => r.source_image))].length;
+  const donations = allRows.filter(r => r.donation && r.donation !== 'पुष्प' && r.donation !== '-' && r.donation !== '').length;
+  const withPhone = allRows.filter(r => r.phone && r.phone.length > 5).length;
+  const shakhas = [...new Set(allRows.map(r => r.shakha_name).filter(Boolean))].length;
+  const nagars = [...new Set(allRows.map(r => r.nagar_name).filter(Boolean))].length;
+
+  statsRow.innerHTML = `
+    <div class="stat-chip"><div class="num">${allRows.length}</div><div class="lbl">Total Records</div></div>
+    <div class="stat-chip"><div class="num">${images}</div><div class="lbl">Images Processed</div></div>
+    <div class="stat-chip"><div class="num">${shakhas || '-'}</div><div class="lbl">Shakhas</div></div>
+    <div class="stat-chip"><div class="num">${nagars || '-'}</div><div class="lbl">Nagars</div></div>
+    <div class="stat-chip"><div class="num">${donations}</div><div class="lbl">Cash Donations</div></div>
+    <div class="stat-chip"><div class="num">${withPhone}</div><div class="lbl">With Phone</div></div>`;
+}
+
+downloadBtn.addEventListener('click', () => {
+  const blob = new Blob(['\uFEFF' + csvString], { type: 'text/csv;charset=utf-8;' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = `rss_register_${new Date().toISOString().slice(0,10)}.csv`;
+  a.click();
+  URL.revokeObjectURL(url);
+});
+
+copyBtn.addEventListener('click', () => {
+  navigator.clipboard.writeText(csvString).then(() => {
+    copyBtn.textContent = '✓ Copied!';
+    setTimeout(() => { copyBtn.innerHTML = '📋 Copy CSV'; }, 2000);
+  });
+});
+</script>
+</body>
+</html>
