@@ -964,9 +964,14 @@ Rules:
 - For donation: capture the exact value (e.g. 500, 1000, 51) or "पुष्प" if flower/symbolic donation, or "-" if dash.
 - Do not add any extra text — output ONLY the JSON array.`;
 
+const CLAUDE_API = "https://rss-api.yourname.workers.dev";
+
   const response = await fetch(CLAUDE_API, {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json' },
+    headers: {
+	  'Content-Type': 'application/json'
+	},
+
     body: JSON.stringify({
       model: MODEL,
       max_tokens: 4096,
