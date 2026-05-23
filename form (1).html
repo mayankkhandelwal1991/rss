@@ -1,0 +1,651 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>पंजीकरण - राष्ट्रीय स्वयंसेवक संघ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Tiro+Devanagari+Hindi&family=Noto+Serif+Devanagari:wght@400;500;600;700;800&family=Cinzel:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bhagwa: #FF6B1A;
+    --bhagwa-deep: #E55100;
+    --bhagwa-light: #FFB774;
+    --maroon: #8B1A0E;
+    --maroon-deep: #5C0F08;
+    --gold: #D4A017;
+    --gold-light: #F1C75A;
+    --cream: #FFF8E7;
+    --cream-deep: #FFEDC4;
+    --ink: #2B1810;
+    --line: rgba(139, 26, 14, 0.18);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { width: 100%; }
+
+  body {
+    min-height: 100vh;
+    background:
+      radial-gradient(circle at 15% 0%, rgba(255, 107, 26, 0.18), transparent 45%),
+      radial-gradient(circle at 85% 100%, rgba(212, 160, 23, 0.15), transparent 45%),
+      linear-gradient(180deg, #FFF3DC 0%, #FFE4B5 100%);
+    font-family: 'Noto Serif Devanagari', serif;
+    color: var(--ink);
+    padding: 24px 14px 48px;
+    position: relative;
+    overflow-x: hidden;
+  }
+  body::before {
+    content: '';
+    position: fixed; inset: 0;
+    background-image: repeating-linear-gradient(45deg,
+      rgba(139, 26, 14, 0.04) 0 2px,
+      transparent 2px 18px);
+    pointer-events: none;
+    z-index: 0;
+  }
+  body::after {
+    content: 'ॐ';
+    position: fixed;
+    top: 8%; right: 5%;
+    font-family: 'Tiro Devanagari Hindi', serif;
+    font-size: 180px;
+    color: var(--bhagwa);
+    opacity: 0.04;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .wrap { max-width: 560px; margin: 0 auto; position: relative; z-index: 1; }
+
+  .card {
+    background: linear-gradient(180deg, #FFFEF8 0%, #FFF8E7 100%);
+    border: 2px solid var(--bhagwa);
+    border-radius: 8px;
+    padding: 0 28px 32px;
+    box-shadow:
+      0 0 0 1px var(--gold),
+      0 0 0 8px var(--cream),
+      0 0 0 9px var(--bhagwa),
+      0 30px 60px -20px rgba(139, 26, 14, 0.4);
+    position: relative;
+    overflow: hidden;
+  }
+
+  .top-banner {
+    background: linear-gradient(90deg, var(--bhagwa) 0%, var(--bhagwa-deep) 50%, var(--bhagwa) 100%);
+    color: #fff;
+    margin: 0 -28px 0;
+    padding: 16px 20px 14px;
+    text-align: center;
+    position: relative;
+    border-bottom: 3px double var(--gold-light);
+  }
+  .top-banner::before, .top-banner::after {
+    content: '❋';
+    color: var(--gold-light);
+    margin: 0 14px;
+    font-size: 14px;
+  }
+  .top-banner .org {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 800;
+    font-size: 16px;
+    letter-spacing: 0.06em;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.25);
+    display: block;
+  }
+  .top-banner .nagar-line {
+    display: block;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 700;
+    font-size: 13px;
+    letter-spacing: 0.08em;
+    margin-top: 3px;
+    color: var(--gold-light);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+  }
+  .top-banner .sub {
+    display: block;
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    letter-spacing: 0.3em;
+    margin-top: 4px;
+    opacity: 0.9;
+  }
+
+  .title-block {
+    text-align: center;
+    padding: 28px 0 20px;
+    position: relative;
+  }
+  .om {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--maroon);
+    font-size: 42px;
+    line-height: 1;
+    margin-bottom: 8px;
+    text-shadow: 0 2px 0 rgba(212, 160, 23, 0.3);
+  }
+  .ornament-row {
+    color: var(--bhagwa);
+    letter-spacing: 12px;
+    font-size: 12px;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 800;
+    font-size: 34px;
+    line-height: 1.1;
+    color: var(--maroon);
+    margin-bottom: 4px;
+  }
+  .title-en {
+    font-family: 'Cinzel', serif;
+    font-weight: 600;
+    font-size: 13px;
+    color: var(--bhagwa-deep);
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 14px;
+  }
+  .subtitle {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--maroon);
+    opacity: 0.75;
+    font-size: 15px;
+  }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    margin: 0 0 26px;
+    color: var(--bhagwa);
+  }
+  .divider .line {
+    flex: 1;
+    height: 1px;
+    background: linear-gradient(90deg, transparent, var(--bhagwa), transparent);
+  }
+  .divider .mark {
+    font-size: 16px;
+    color: var(--gold);
+  }
+
+  .field {
+    margin-bottom: 16px;
+    position: relative;
+  }
+  label {
+    display: flex;
+    align-items: baseline;
+    gap: 8px;
+    flex-wrap: wrap;
+    font-size: 13px;
+    color: var(--maroon);
+    margin-bottom: 7px;
+    padding-left: 18px;
+    position: relative;
+  }
+  label::before {
+    content: '◆';
+    position: absolute;
+    left: 0;
+    top: 1px;
+    color: var(--bhagwa);
+    font-size: 10px;
+  }
+  label .hi {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--maroon-deep);
+    letter-spacing: 0;
+  }
+  label .en {
+    font-family: 'Cinzel', serif;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--bhagwa-deep);
+    opacity: 0.8;
+  }
+  label .req {
+    color: var(--bhagwa);
+    font-weight: 700;
+    font-size: 16px;
+    margin-left: 2px;
+  }
+
+  input, select, textarea {
+    width: 100%;
+    padding: 13px 14px;
+    border: 1.5px solid var(--line);
+    background: #FFFCF3;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 16px;
+    color: var(--ink);
+    border-radius: 3px;
+    transition: all 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+  textarea {
+    min-height: 80px;
+    resize: vertical;
+    line-height: 1.5;
+  }
+  select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3e%3cpath fill='%238B1A0E' d='M6 8L0 0h12z'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    background-color: #FFFCF3;
+    padding-right: 38px;
+    cursor: pointer;
+  }
+  select, option {
+    font-family: 'Tiro Devanagari Hindi', 'Noto Serif Devanagari', serif;
+  }
+  select:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+  input:hover, select:hover:not(:disabled), textarea:hover {
+    border-color: var(--bhagwa-light);
+  }
+  input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--bhagwa);
+    background: #fff;
+    box-shadow: 0 0 0 3px rgba(255, 107, 26, 0.15);
+  }
+  input::placeholder, textarea::placeholder {
+    color: var(--ink);
+    opacity: 0.35;
+    font-style: italic;
+  }
+
+  .submit-wrap { margin-top: 24px; position: relative; }
+  button.submit {
+    width: 100%;
+    background: linear-gradient(180deg, var(--bhagwa) 0%, var(--bhagwa-deep) 100%);
+    color: #fff;
+    border: none;
+    padding: 16px;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    cursor: pointer;
+    border-radius: 4px;
+    box-shadow:
+      0 0 0 1px var(--gold),
+      0 4px 14px rgba(139, 26, 14, 0.3);
+    text-shadow: 0 1px 2px rgba(0,0,0,0.2);
+    transition: all 0.2s;
+    position: relative;
+  }
+  button.submit:hover {
+    transform: translateY(-1px);
+    box-shadow:
+      0 0 0 1px var(--gold),
+      0 6px 20px rgba(139, 26, 14, 0.4);
+  }
+  button.submit:active { transform: translateY(0); }
+  button.submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+  .status {
+    margin-top: 16px;
+    padding: 12px;
+    text-align: center;
+    font-size: 14px;
+    border-radius: 3px;
+    display: none;
+    font-family: 'Noto Serif Devanagari', serif;
+  }
+  .status.show { display: block; }
+  .status.success { background: #E8F5E9; color: #1B5E20; border: 1px solid #A5D6A7; }
+  .status.error   { background: #FFEBEE; color: #B71C1C; border: 1px solid #EF9A9A; }
+
+  .footer-band {
+    margin: 28px -28px -32px;
+    padding: 14px 20px;
+    background: linear-gradient(90deg, var(--maroon-deep) 0%, var(--maroon) 50%, var(--maroon-deep) 100%);
+    color: var(--gold-light);
+    text-align: center;
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    border-top: 3px double var(--gold);
+  }
+  .footer-band .sep {
+    color: var(--bhagwa-light);
+    margin: 0 10px;
+  }
+
+  .thanks {
+    text-align: center;
+    padding: 40px 20px;
+  }
+  .thanks .om-big {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--bhagwa);
+    font-size: 64px;
+    line-height: 1;
+    margin-bottom: 16px;
+  }
+  .thanks .checkmark {
+    width: 72px; height: 72px;
+    border: 2.5px solid var(--bhagwa);
+    border-radius: 50%;
+    margin: 0 auto 20px;
+    display: flex; align-items: center; justify-content: center;
+    color: var(--bhagwa);
+    font-size: 38px;
+    background: var(--cream);
+    box-shadow: 0 0 0 4px var(--cream-deep), 0 0 0 5px var(--gold);
+  }
+  .thanks h2 {
+    font-family: 'Noto Serif Devanagari', serif;
+    font-size: 32px;
+    color: var(--maroon);
+    font-weight: 800;
+    margin-bottom: 8px;
+  }
+  .thanks p {
+    font-family: 'Tiro Devanagari Hindi', serif;
+    color: var(--ink);
+    opacity: 0.8;
+    font-size: 16px;
+    margin-bottom: 4px;
+  }
+  .thanks .en {
+    font-family: 'Cinzel', serif;
+    font-size: 12px;
+    letter-spacing: 0.2em;
+    color: var(--bhagwa-deep);
+    text-transform: uppercase;
+    opacity: 0.7;
+    margin-top: 12px;
+  }
+
+  @media (max-width: 420px) {
+    .card { padding: 0 20px 28px; }
+    .top-banner { margin: 0 -20px 0; }
+    .footer-band { margin: 24px -20px -28px; }
+    h1 { font-size: 28px; }
+    .om { font-size: 36px; }
+    body::after { font-size: 130px; }
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="card" id="card">
+
+    <div class="top-banner">
+      <span class="org">राष्ट्रीय स्वयंसेवक संघ</span>
+      <span class="nagar-line" id="bannerNagar">सीतापुरा नगर — RSS पंजीकरण</span>
+      <span class="sub">Rashtriya Swayamsevak Sangh · RSS Registration</span>
+    </div>
+
+    <div class="title-block">
+      <div class="om">ॐ</div>
+      <div class="ornament-row">✦ ✦ ✦</div>
+      <h1>स्वयंसेवक पंजीकरण</h1>
+      <div class="title-en">Swayamsevak Registration</div>
+      <p class="subtitle">कृपया अपना विवरण सावधानीपूर्वक भरें</p>
+    </div>
+
+    <div class="divider">
+      <span class="line"></span>
+      <span class="mark">❋</span>
+      <span class="line"></span>
+    </div>
+
+    <form id="regForm" autocomplete="on">
+
+      <div class="field">
+        <label for="name"><span class="hi">नाम</span><span class="en">Name</span><span class="req">*</span></label>
+        <input type="text" id="name" name="name" required maxlength="80" />
+      </div>
+
+      <div class="field">
+        <label for="father"><span class="hi">पिता का नाम</span><span class="en">Father's Name</span></label>
+        <input type="text" id="father" name="father" maxlength="80" />
+      </div>
+
+      <div class="field">
+        <label for="work"><span class="hi">व्यवसाय</span><span class="en">Occupation</span></label>
+        <input type="text" id="work" name="work" maxlength="100" />
+      </div>
+
+      <div class="field">
+        <label for="address"><span class="hi">निवास का पता</span><span class="en">Address</span></label>
+        <textarea id="address" name="address" maxlength="250"></textarea>
+      </div>
+
+      <div class="field">
+        <label for="mobile"><span class="hi">मोबाइल नंबर</span><span class="en">Mobile</span><span class="req">*</span></label>
+        <input type="tel" id="mobile" name="mobile" required pattern="[0-9+\-\s]{7,15}" placeholder="10 अंकों का मोबाइल नंबर" />
+      </div>
+
+      <div class="field">
+        <label for="dob"><span class="hi">जन्म तिथि</span><span class="en">Date of Birth</span></label>
+        <input type="date" id="dob" name="dob" />
+      </div>
+
+      <div class="field">
+        <label for="nagar"><span class="hi">नगर का नाम</span><span class="en">Nagar</span><span class="req">*</span></label>
+        <select id="nagar" name="nagar" required>
+          <option value="" disabled selected>-- नगर चुनें --</option>
+          <option value="Sitapura Nagar">सीतापुरा नगर / Sitapura Nagar</option>
+          <option value="Sanganer Nagar">सांगानेर नगर / Sanganer Nagar</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="shakha"><span class="hi">शाखा</span><span class="en">Shakha</span><span class="req">*</span></label>
+        <select id="shakha" name="shakha" required disabled>
+          <option value="" disabled selected>-- पहले नगर चुनें --</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="swayamsevakSince"><span class="hi">कब से स्वयंसेवक</span><span class="en">Swayamsevak Since</span></label>
+        <select id="swayamsevakSince" name="swayamsevakSince">
+          <option value="" disabled selected>-- वर्ष चुनें / Select Years --</option>
+          <option value="0 वर्ष">0 वर्ष (नया / New)</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="shikshan"><span class="hi">शिक्षण</span><span class="en">Shikshan</span></label>
+        <select id="shikshan" name="shikshan">
+          <option value="" disabled selected>-- शिक्षण चुनें --</option>
+          <option value="प्रारंभिक वर्ग">प्रारंभिक वर्ग</option>
+          <option value="प्राथमिक वर्ग">प्राथमिक वर्ग</option>
+          <option value="प्रथम वर्ष संघ शिक्षा वर्ग">प्रथम वर्ष संघ शिक्षा वर्ग</option>
+          <option value="द्वितीय वर्ष संघ शिक्षा वर्ग">द्वितीय वर्ष संघ शिक्षा वर्ग</option>
+          <option value="तृतीय वर्ष संघ शिक्षा वर्ग">तृतीय वर्ष संघ शिक्षा वर्ग</option>
+        </select>
+      </div>
+
+      <div class="field">
+        <label for="dayitva"><span class="hi">दायित्व</span><span class="en">Responsibility</span></label>
+        <input type="text" id="dayitva" name="dayitva" maxlength="100" />
+      </div>
+
+      <div class="submit-wrap">
+        <button type="submit" class="submit" id="submitBtn">जमा करें / Submit</button>
+      </div>
+      <div class="status" id="status"></div>
+    </form>
+
+    <div class="footer-band">
+      वन्दे <span class="sep">✦</span> मातरम्
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Nagar → Shakha data ──────────────────────────────────────────────
+  const NAGAR_DATA = {
+    "Sitapura Nagar": {
+      label: "सीतापुरा नगर — RSS पंजीकरण",
+      shakhas: [
+        { value: "अटल शाखा",          label: "अटल शाखा" },
+        { value: "गोवर्धन शाखा",       label: "गोवर्धन शाखा" },
+        { value: "बलराम शाखा",         label: "बलराम शाखा" },
+        { value: "बजरंग शाखा",         label: "बजरंग शाखा" },
+        { value: "श्री राम शाखा",      label: "श्री राम शाखा" },
+        { value: "सरल बिहारी शाखा",    label: "सरल बिहारी शाखा" },
+        { value: "श्री कल्याण शाखा",   label: "श्री कल्याण शाखा" },
+        { value: "गोविंद शाखा",        label: "गोविंद शाखा" },
+        { value: "गोकुल मिलन",         label: "गोकुल मिलन" },
+        { value: "गार्डन सिटी मिलन",   label: "गार्डन सिटी मिलन" },
+      ]
+    },
+    "Sanganer Nagar": {
+      label: "सांगानेर नगर — RSS पंजीकरण",
+      shakhas: [
+        // शाखा
+        { value: "केशव शाखा",                              label: "केशव शाखा" },
+        { value: "श्री गुरु जी शाखा",                     label: "श्री गुरु जी शाखा" },
+        { value: "फतेह सिंह शाखा",                        label: "फतेह सिंह शाखा" },
+        { value: "शिवाजी शाखा",                           label: "शिवाजी शाखा" },
+        { value: "सांगा शाखा",                            label: "सांगा शाखा" },
+        { value: "अंबेडकर शाखा",                          label: "अंबेडकर शाखा" },
+        { value: "आजाद शाखा",                             label: "आजाद शाखा" },
+        { value: "बालाजी शाखा",                           label: "बालाजी शाखा" },
+        { value: "विनायक शाखा",                           label: "विनायक शाखा" },
+        { value: "सुभाष शाखा",                            label: "सुभाष शाखा" },
+        { value: "सुदर्शन शाखा",                          label: "सुदर्शन शाखा" },
+        { value: "रामदेव शाखा",                           label: "रामदेव शाखा" },
+        { value: "तेजाजी महाविद्यालय विद्यार्थी शाखा",  label: "तेजाजी महाविद्यालय विद्यार्थी शाखा" },
+        // मिलन
+        { value: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन",  label: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन" },
+        { value: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन",     label: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन" },
+        { value: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन",       label: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन" },
+        { value: "मारुति महाविद्यालय विद्यार्थी मिलन",           label: "मारुति महाविद्यालय विद्यार्थी मिलन" },
+        { value: "बालाजी महाविद्यालय विद्यार्थी मिलन",           label: "बालाजी महाविद्यालय विद्यार्थी मिलन" },
+      ]
+    }
+  };
+
+  // ── Populate "कब से स्वयंसेवक" dropdown (1–90 वर्ष) ─────────────────
+  (function() {
+    const sel = document.getElementById('swayamsevakSince');
+    for (let i = 1; i <= 90; i++) {
+      const opt = document.createElement('option');
+      opt.value = i + ' वर्ष';
+      opt.textContent = i + ' वर्ष';
+      sel.appendChild(opt);
+    }
+  })();
+
+  // ── DOM refs ─────────────────────────────────────────────────────────
+  const nagarSel    = document.getElementById('nagar');
+  const shakhaSel   = document.getElementById('shakha');
+  const bannerNagar = document.getElementById('bannerNagar');
+  const form        = document.getElementById('regForm');
+  const statusEl    = document.getElementById('status');
+  const submitBtn   = document.getElementById('submitBtn');
+  const card        = document.getElementById('card');
+
+  // ── Nagar change → update Shakha dropdown & banner ───────────────────
+  nagarSel.addEventListener('change', () => {
+    const key = nagarSel.value;
+    const data = NAGAR_DATA[key];
+
+    // Update banner text
+    bannerNagar.textContent = data ? data.label : 'RSS पंजीकरण';
+
+    // Rebuild shakha options
+    shakhaSel.innerHTML = '<option value="" disabled selected>-- शाखा चुनें --</option>';
+    if (data) {
+      data.shakhas.forEach(s => {
+        const opt = document.createElement('option');
+        opt.value = s.value;
+        opt.textContent = s.label;
+        shakhaSel.appendChild(opt);
+      });
+      shakhaSel.disabled = false;
+    } else {
+      shakhaSel.disabled = true;
+    }
+    shakhaSel.value = '';
+  });
+
+  // ── Form submit ───────────────────────────────────────────────────────
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwespocpcOcclfdal9vStY0frabU6Lr_EqMVr2NeAWojID3Gp-1eHKs6N4N1CNfl_hV4g/exec";
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    statusEl.className = 'status';
+    statusEl.textContent = '';
+
+    submitBtn.disabled = true;
+    submitBtn.textContent = 'भेज रहे हैं… / Sending…';
+
+    const data = {
+      name:             form.name.value.trim(),
+      father:           form.father.value.trim(),
+      work:             form.work.value.trim(),
+      address:          form.address.value.trim(),
+      mobile:           form.mobile.value.trim(),
+      dob:              form.dob.value,
+      nagar:            form.nagar.value,
+      shakha:           form.shakha.value,
+      swayamsevakSince: form.swayamsevakSince.value.trim(),
+      shikshan:         form.shikshan.value.trim(),
+      dayitva:          form.dayitva.value.trim()
+    };
+
+    try {
+      const body = new URLSearchParams(data).toString();
+      await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+        body: body
+      });
+      showThanks();
+    } catch (err) {
+      submitBtn.disabled = false;
+      submitBtn.textContent = 'जमा करें / Submit';
+      showStatus('त्रुटि! कृपया पुनः प्रयास करें। / Could not send. Please try again.', 'error');
+    }
+  });
+
+  function showStatus(msg, type) {
+    statusEl.textContent = msg;
+    statusEl.className = 'status show ' + type;
+  }
+
+  function showThanks() {
+    card.innerHTML = `
+      <div class="top-banner">
+        <span class="org">राष्ट्रीय स्वयंसेवक संघ</span>
+        <span class="sub">Rashtriya Swayamsevak Sangh</span>
+      </div>
+      <div class="thanks">
+        <div class="checkmark">✓</div>
+        <h2>धन्यवाद</h2>
+        <p>आपका विवरण सफलतापूर्वक दर्ज कर लिया गया है।</p>
+        <div class="en">Thank You — Your details have been recorded</div>
+      </div>
+      <div class="footer-band">
+        वन्दे <span class="sep">✦</span> मातरम्
+      </div>
+    `;
+  }
+</script>
+</body>
+</html>
