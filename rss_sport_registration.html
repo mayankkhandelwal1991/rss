@@ -207,6 +207,13 @@
     cursor: pointer;
   }
 
+  select:disabled {
+    background-color: #F5F5F5;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #E0E0E0;
+  }
+
   input:focus, select:focus, textarea:focus {
     border-color: #FF6B35;
     box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
@@ -372,39 +379,22 @@
         </select>
       </div>
 
-      <div class="two-col">
-        <div class="form-group">
-          <label>नगर <span class="req">*</span></label>
-          <select id="nagar" required>
-            <option value="">— नगर चुनें —</option>
-            <option>जयपुर उत्तर</option>
-            <option>जयपुर दक्षिण</option>
-            <option>जयपुर पूर्व</option>
-            <option>जयपुर पश्चिम</option>
-            <option>जयपुर मध्य</option>
-            <option>विराट नगर</option>
-            <option>शाहपुरा</option>
-            <option>चौमूं</option>
-            <option>फुलेरा</option>
-            <option>अन्य</option>
-          </select>
-        </div>
-        <div class="form-group">
-          <label>शाखा का नाम <span class="req">*</span></label>
-          <select id="shakha" required>
-            <option value="">— शाखा चुनें —</option>
-            <option>गोरधन बस्ती शाखा</option>
-            <option>सांगानेर शाखा</option>
-            <option>मालवीय नगर शाखा</option>
-            <option>प्रतापनगर शाखा</option>
-            <option>मानसरोवर शाखा</option>
-            <option>वैशाली नगर शाखा</option>
-            <option>सोडाला शाखा</option>
-            <option>झोटवाड़ा शाखा</option>
-            <option>विद्याधर नगर शाखा</option>
-            <option>अन्य शाखा</option>
-          </select>
-        </div>
+      <div class="form-group">
+        <label>नगर <span class="req">*</span></label>
+        <select id="nagar" required>
+          <option value="">— नगर चुनें —</option>
+          <option value="Sitapura Nagar">सीतापुरा नगर</option>
+          <option value="Sanganer Nagar">सांगानेर नगर</option>
+          <option value="Pratap Nagar">प्रताप नगर</option>
+          <option value="Govind Nagar">गोविन्द नगर</option>
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label>शाखा का नाम <span class="req">*</span></label>
+        <select id="shakha" required disabled>
+          <option value="">— पहले नगर चुनें —</option>
+        </select>
       </div>
 
       <button type="submit" class="submit-btn" id="submitBtn">
@@ -423,6 +413,143 @@
 <script>
   // ⚠️  REPLACE THIS URL with your published Google Apps Script Web App URL
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxhYBkXPfmZt-PkEWvHMaDNuSiubFkEUwEhg2cvzfwnoGTjWhy70rNVEzngMIE09DM/exec";
+
+  // ── Nagar → Shakha data ──────────────────────────────────────────────
+  const NAGAR_DATA = {
+    "Sitapura Nagar": {
+      label: "सीतापुरा नगर",
+      shakhas: [
+        { value: "अटल शाखा",          label: "अटल शाखा" },
+        { value: "गोवर्धन शाखा",       label: "गोवर्धन शाखा" },
+        { value: "बलराम शाखा",         label: "बलराम शाखा" },
+        { value: "बजरंग शाखा",         label: "बजरंग शाखा" },
+        { value: "श्री राम शाखा",      label: "श्री राम शाखा" },
+        { value: "सरल बिहारी शाखा",    label: "सरल बिहारी शाखा" },
+        { value: "श्री कल्याण शाखा",   label: "श्री कल्याण शाखा" },
+        { value: "गोविंद शाखा",        label: "गोविंद शाखा" },
+        { value: "गोकुल मिलन",         label: "गोकुल मिलन" },
+        { value: "गार्डन सिटी मिलन",   label: "गार्डन सिटी मिलन" },
+      ]
+    },
+    "Sanganer Nagar": {
+      label: "सांगानेर नगर",
+      shakhas: [
+        { value: "केशव शाखा",                             label: "केशव शाखा" },
+        { value: "श्री गुरु जी शाखा",                    label: "श्री गुरु जी शाखा" },
+        { value: "फतेह सिंह शाखा",                       label: "फतेह सिंह शाखा" },
+        { value: "शिवाजी शाखा",                          label: "शिवाजी शाखा" },
+        { value: "सांगा शाखा",                           label: "सांगा शाखा" },
+        { value: "अंबेडकर शाखा",                         label: "अंबेडकर शाखा" },
+        { value: "आजाद शाखा",                            label: "आजाद शाखा" },
+        { value: "बालाजी शाखा",                          label: "बालाजी शाखा" },
+        { value: "विनायक शाखा",                          label: "विनायक शाखा" },
+        { value: "सुभाष शाखा",                           label: "सुभाष शाखा" },
+        { value: "सुदर्शन शाखा",                         label: "सुदर्शन शाखा" },
+        { value: "रामदेव शाखा",                          label: "रामदेव शाखा" },
+        { value: "तेजाजी महाविद्यालय विद्यार्थी शाखा", label: "तेजाजी महाविद्यालय विद्यार्थी शाखा" },
+        { value: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन", label: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन" },
+        { value: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन",    label: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन" },
+        { value: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन",      label: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन" },
+        { value: "मारुति महाविद्यालय विद्यार्थी मिलन",          label: "मारुति महाविद्यालय विद्यार्थी मिलन" },
+        { value: "बालाजी महाविद्यालय विद्यार्थी मिलन",          label: "बालाजी महाविद्यालय विद्यार्थी मिलन" },
+      ]
+    },
+    "Pratap Nagar": {
+      label: "प्रताप नगर",
+      shakhas: [
+        { value: "अभिमन्यु तरुण व्यवसाई शाखा",       label: "अभिमन्यु तरुण व्यवसाई शाखा" },
+        { value: "महादेव मिलन सेक्टर 16",             label: "महादेव मिलन सेक्टर 16" },
+        { value: "सावरकर तरुण व्यवसाई शाखा",          label: "सावरकर तरुण व्यवसाई शाखा" },
+        { value: "विवेकानंद तरुण व्यवसाई शाखा",       label: "विवेकानंद तरुण व्यवसाई शाखा" },
+        { value: "175 ब्लॉक मिलन",                    label: "175 ब्लॉक मिलन" },
+        { value: "बालाजी प्रौढ़ शाखा",                label: "बालाजी प्रौढ़ शाखा" },
+        { value: "सरस्वती मिलन",                      label: "सरस्वती मिलन" },
+        { value: "आजाद तरुण व्यवसाई शाखा",            label: "आजाद तरुण व्यवसाई शाखा" },
+        { value: "आजाद प्रौढ़ शाखा",                  label: "आजाद प्रौढ़ शाखा" },
+        { value: "महाराणा प्रताप तरुण व्यवसाई शाखा", label: "महाराणा प्रताप तरुण व्यवसाई शाखा" },
+        { value: "शिवाजी तरुण व्यवसाई शाखा",         label: "शिवाजी तरुण व्यवसाई शाखा" },
+        { value: "चाणक्य तरुण व्यवसाई शाखा",          label: "चाणक्य तरुण व्यवसाई शाखा" },
+        { value: "शिक्षक प्रहरी मिलन",                label: "शिक्षक प्रहरी मिलन" },
+        { value: "महावीर तरुण व्यवसाई शाखा",          label: "महावीर तरुण व्यवसाई शाखा" },
+        { value: "प्रताप एनक्लेव मिलन",               label: "प्रताप एनक्लेव मिलन" },
+        { value: "श्री राम तरुण व्यवसाई शाखा",        label: "श्री राम तरुण व्यवसाई शाखा" },
+        { value: "तेजाजी तरुण व्यवसाई शाखा",          label: "तेजाजी तरुण व्यवसाई शाखा" },
+        { value: "कृष्णा तरुण व्यवसाई शाखा",          label: "कृष्णा तरुण व्यवसाई शाखा" },
+        { value: "चिनाव तरुण व्यवसाई शाखा",           label: "चिनाव तरुण व्यवसाई शाखा" },
+        { value: "बजरंग मिलन",                        label: "बजरंग मिलन" },
+        { value: "संभाजी मिलन",                       label: "संभाजी मिलन" },
+        { value: "शिवाजी मिलन",                       label: "शिवाजी मिलन" },
+        { value: "महाविद्यालय विद्यार्थी मिलन सेक्टर 19", label: "महाविद्यालय विद्यार्थी मिलन सेक्टर 19" },
+        { value: "महाविद्यालय विद्यार्थी मिलन सेक्टर 26", label: "महाविद्यालय विद्यार्थी मिलन सेक्टर 26" },
+        { value: "श्रीराम संयुक्त विद्यार्थी शाखा",   label: "श्रीराम संयुक्त विद्यार्थी शाखा" },
+        { value: "चाणक्य संयुक्त विद्यार्थी शाखा",    label: "चाणक्य संयुक्त विद्यार्थी शाखा" },
+        { value: "श्रीकृष्ण संयुक्त विद्यार्थी शाखा", label: "श्रीकृष्ण संयुक्त विद्यार्थी शाखा" },
+        { value: "अभिमन्यु संयुक्त विद्यार्थी शाखा",  label: "अभिमन्यु संयुक्त विद्यार्थी शाखा" },
+        { value: "लवकुश संयुक्त विद्यार्थी शाखा",     label: "लवकुश संयुक्त विद्यार्थी शाखा" },
+        { value: "आज़ाद संयुक्त विद्यार्थी शाखा",     label: "आज़ाद संयुक्त विद्यार्थी शाखा" },
+        { value: "प्रताप संयुक्त विद्यार्थी शाखा",    label: "प्रताप संयुक्त विद्यार्थी शाखा" },
+        { value: "बालाजी संयुक्त विद्यार्थी शाखा",    label: "बालाजी संयुक्त विद्यार्थी शाखा" },
+        { value: "शिव संयुक्त विद्यार्थी शाखा",       label: "शिव संयुक्त विद्यार्थी शाखा" },
+      ]
+    },
+    "Govind Nagar": {
+      label: "गोविन्द नगर",
+      shakhas: [
+        { value: "योगेश्वर",         label: "योगेश्वर (प्रभात शाखा)" },
+        { value: "विवेकानंद",        label: "विवेकानंद (प्रभात शाखा)" },
+        { value: "गोपेश्वर",         label: "गोपेश्वर (प्रभात शाखा)" },
+        { value: "बजरंग",            label: "बजरंग (प्रभात शाखा)" },
+        { value: "सूर्य",            label: "सूर्य (प्रभात शाखा)" },
+        { value: "नंद गांव",         label: "नंद गांव (प्रभात शाखा)" },
+        { value: "महाकालेश्वर",      label: "महाकालेश्वर (मिलन शाखा)" },
+        { value: "महावीर",           label: "महावीर (मिलन शाखा)" },
+        { value: "वैष्णव",           label: "वैष्णव (मिलन शाखा)" },
+        { value: "श्रीगुरुजी",       label: "श्रीगुरुजी (मिलन शाखा)" },
+        { value: "विजय",             label: "विजय (मिलन शाखा)" },
+        { value: "रामसिंह पूरा",     label: "रामसिंह पूरा (मिलन शाखा)" },
+        { value: "योगेश्वर सायं",    label: "योगेश्वर सायं (विद्यार्थी भाग)" },
+        { value: "अर्जुन",           label: "अर्जुन (विद्यार्थी भाग)" },
+        { value: "विवेकानंद सायं",   label: "विवेकानंद सायं (विद्यार्थी भाग)" },
+        { value: "गोपेश्वर सायं",    label: "गोपेश्वर सायं (विद्यार्थी भाग)" },
+        { value: "लक्ष्मण",          label: "लक्ष्मण (विद्यार्थी भाग)" },
+        { value: "चन्द्रगुप्त",      label: "चन्द्रगुप्त (विद्यार्थी भाग)" },
+        { value: "बजरंग सायं",       label: "बजरंग सायं (विद्यार्थी भाग)" },
+        { value: "श्रीगुरुजी सायं",  label: "श्रीगुरुजी सायं (विद्यार्थी भाग)" },
+        { value: "वैष्णव सायं",      label: "वैष्णव सायं (विद्यार्थी भाग)" },
+        { value: "श्री कृष्णा",      label: "श्री कृष्णा (विद्यार्थी भाग)" },
+        { value: "अम्बेडकर",         label: "अम्बेडकर (विद्यार्थी भाग)" },
+        { value: "भगतसिंह",          label: "भगतसिंह (महाविद्यालय शाखा)" },
+        { value: "सुखदेव",           label: "सुखदेव (महाविद्यालय शाखा)" },
+        { value: "गोविन्द",          label: "गोविन्द (महाविद्यालय शाखा)" },
+      ]
+    }
+  };
+
+  // ── Populate shakha when nagar changes ───────────────────────────────
+  document.getElementById('nagar').addEventListener('change', function() {
+    const shakhaEl = document.getElementById('shakha');
+    const key = this.value;
+    shakhaEl.innerHTML = '';
+
+    if (!key || !NAGAR_DATA[key]) {
+      shakhaEl.innerHTML = '<option value="">— पहले नगर चुनें —</option>';
+      shakhaEl.disabled = true;
+      return;
+    }
+
+    shakhaEl.disabled = false;
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— शाखा चुनें —';
+    shakhaEl.appendChild(placeholder);
+
+    NAGAR_DATA[key].shakhas.forEach(function(s) {
+      const opt = document.createElement('option');
+      opt.value = s.value;
+      opt.textContent = s.label;
+      shakhaEl.appendChild(opt);
+    });
+  });
 
   document.getElementById('regForm').addEventListener('submit', async function(e) {
     e.preventDefault();
@@ -454,16 +581,15 @@
     msg.style.display = 'none';
 
     try {
-      const form = new FormData();
-	form.append('data', JSON.stringify(data));
-	const resp = await fetch(SCRIPT_URL, {
-	  method: 'POST',
-	  mode: 'no-cors',
-	  body: form
-	});
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
 
       showMsg('success', '✅ आपका पंजीकरण सफलतापूर्वक हो गया!\n\nनाम: ' + data.playerName + '\nखेल: ' + data.sport + '\n\nधन्यवाद 🙏 भारत माता की जय! 🇮🇳');
-      //document.getElementById('regForm').reset();
+      document.getElementById('regForm').reset();
     } catch (err) {
       showMsg('error', '❌ नेटवर्क में समस्या आई। कृपया पुनः प्रयास करें।');
     } finally {
