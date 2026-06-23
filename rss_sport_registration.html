@@ -349,7 +349,14 @@
           <input type="text" id="fatherName" placeholder="पिता का नाम" required>
         </div>
       </div>
-
+      <div class="form-group">
+        <label>लिंग<span class="req">*</span></label>
+        <select id="gender" required>
+          <option value="">— लिंग चुनें —</option>
+          <option value="Male">पुरुष</option>
+          <option value="Female">महिला</option>
+        </select>
+      </div>
       <div class="two-col">
         <div class="form-group">
           <label>उम्र <span class="req">*</span></label>
@@ -577,6 +584,7 @@
       playerName: document.getElementById('playerName').value.trim(),
       fatherName: document.getElementById('fatherName').value.trim(),
       age: document.getElementById('age').value,
+      gender: document.getElementById('gender').value
       address: document.getElementById('address').value.trim(),
       sport: document.getElementById('sport').value,
       mobile: mobile,
