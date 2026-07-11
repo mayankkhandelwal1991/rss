@@ -586,7 +586,7 @@
     const data = {
       timestamp: new Date().toLocaleString('hi-IN', {timeZone:'Asia/Kolkata'}),
       playerName: document.getElementById('playerName').value.trim(),
-      fatherName: document.getElementById('fatherName').value.trim(),
+      fatherName: document.getElementById('fatherName').value.trim() +"#"+ document.getElementById('class').value +"#"+document.getElementById('gender').value,
       age: document.getElementById('age').value,
       class: document.getElementById('class').value,
       gender: document.getElementById('gender').value,
