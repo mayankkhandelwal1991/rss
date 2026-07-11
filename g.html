@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>गोविंद बस्ती युवा खेल संगम - पंजीकरण</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+Devanagari:wght@400;500;600;700&family=Poppins:wght@400;500;600;700&display=swap');
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #FF6B35 0%, #F7931E 30%, #FF6B35 60%, #C41E3A 100%);
+    min-height: 100vh;
+    padding: 16px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background: 
+      radial-gradient(circle at 10% 20%, rgba(255,255,255,0.08) 0%, transparent 40%),
+      radial-gradient(circle at 90% 80%, rgba(255,215,0,0.1) 0%, transparent 40%);
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  .page-wrap {
+    position: relative;
+    z-index: 1;
+    max-width: 520px;
+    margin: 0 auto;
+  }
+
+  /* Header */
+  .header {
+    background: linear-gradient(135deg, #8B0000 0%, #CC1A1A 50%, #8B0000 100%);
+    border-radius: 20px 20px 0 0;
+    padding: 28px 24px 20px;
+    text-align: center;
+    border: 2px solid rgba(255,215,0,0.4);
+    border-bottom: none;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .header::before {
+    content: '🏏🤼🏃‍♂️🏐🤸‍♀️';
+    position: absolute;
+    font-size: 80px;
+    opacity: 0.06;
+    top: -10px;
+    left: 50%;
+    transform: translateX(-50%);
+    white-space: nowrap;
+    letter-spacing: -10px;
+  }
+
+  .header-flag {
+    display: flex;
+    justify-content: center;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .flag-stripe {
+    width: 40px;
+    height: 5px;
+    border-radius: 3px;
+  }
+
+  .flag-stripe.saffron { background: #FF6913; }
+  .flag-stripe.white { background: #ffffff; }
+  .flag-stripe.green { background: #138808; }
+
+  .rss-logo {
+    font-size: 36px;
+    margin-bottom: 8px;
+    display: block;
+    filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+  }
+
+  .header h1 {
+    color: #FFD700;
+    font-size: 20px;
+    font-weight: 700;
+    line-height: 1.4;
+    text-shadow: 1px 1px 3px rgba(0,0,0,0.5);
+    margin-bottom: 6px;
+  }
+
+  .header .subtitle {
+    color: rgba(255,255,255,0.9);
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .header .dates-badge {
+    display: inline-block;
+    background: #FFD700;
+    color: #8B0000;
+    font-size: 12px;
+    font-weight: 700;
+    padding: 4px 14px;
+    border-radius: 20px;
+    margin-top: 10px;
+    letter-spacing: 0.3px;
+  }
+
+  /* Info section */
+  .info-section {
+    background: rgba(255,255,255,0.95);
+    padding: 18px 20px;
+    border-left: 3px solid #FF6B35;
+    border-right: 3px solid #FF6B35;
+  }
+
+  .info-text {
+    font-size: 13.5px;
+    color: #333;
+    line-height: 1.8;
+    text-align: justify;
+  }
+
+  .sports-chips {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-top: 12px;
+  }
+
+  .chip {
+    background: #FFF3E0;
+    border: 1px solid #FFB74D;
+    color: #E65100;
+    font-size: 12px;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* Form */
+  .form-card {
+    background: #ffffff;
+    border-radius: 0 0 20px 20px;
+    padding: 24px 20px 28px;
+    border: 2px solid rgba(255,215,0,0.4);
+    border-top: none;
+    box-shadow: 0 12px 40px rgba(0,0,0,0.25);
+  }
+
+  .form-title {
+    text-align: center;
+    font-size: 17px;
+    font-weight: 700;
+    color: #8B0000;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 2px dashed #FFD700;
+  }
+
+  .form-group {
+    margin-bottom: 16px;
+  }
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: #5D0000;
+    margin-bottom: 5px;
+  }
+
+  label .req {
+    color: #CC1A1A;
+    margin-left: 2px;
+  }
+
+  input[type="text"],
+  input[type="tel"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    padding: 11px 14px;
+    border: 1.5px solid #FFCCBC;
+    border-radius: 10px;
+    font-size: 14px;
+    font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+    color: #333;
+    background: #FFFAF8;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+    appearance: none;
+    -webkit-appearance: none;
+  }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23CC1A1A' stroke-width='2' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 14px center;
+    padding-right: 38px;
+    cursor: pointer;
+  }
+
+  select:disabled {
+    background-color: #F5F5F5;
+    color: #999;
+    cursor: not-allowed;
+    border-color: #E0E0E0;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: #FF6B35;
+    box-shadow: 0 0 0 3px rgba(255,107,53,0.12);
+    background: #fff;
+  }
+
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+
+  .submit-btn {
+    width: 100%;
+    padding: 15px;
+    background: linear-gradient(135deg, #CC1A1A 0%, #FF4500 100%);
+    color: #fff;
+    font-size: 16px;
+    font-weight: 700;
+    font-family: 'Noto Sans Devanagari', 'Poppins', sans-serif;
+    border: none;
+    border-radius: 12px;
+    cursor: pointer;
+    margin-top: 8px;
+    position: relative;
+    overflow: hidden;
+    transition: transform 0.15s, box-shadow 0.15s;
+    box-shadow: 0 4px 15px rgba(204,26,26,0.4);
+    letter-spacing: 0.3px;
+  }
+
+  .submit-btn::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(135deg, rgba(255,215,0,0.2), transparent);
+    opacity: 0;
+    transition: opacity 0.2s;
+  }
+
+  .submit-btn:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(204,26,26,0.5); }
+  .submit-btn:hover::before { opacity: 1; }
+  .submit-btn:active { transform: translateY(0); }
+  .submit-btn:disabled { opacity: 0.7; cursor: not-allowed; transform: none; }
+
+  /* Success / Error */
+  .result-msg {
+    display: none;
+    text-align: center;
+    padding: 18px;
+    border-radius: 12px;
+    margin-top: 16px;
+    font-size: 15px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+
+  .result-msg.success {
+    background: #E8F5E9;
+    color: #1B5E20;
+    border: 1.5px solid #81C784;
+  }
+
+  .result-msg.error {
+    background: #FFEBEE;
+    color: #B71C1C;
+    border: 1.5px solid #EF9A9A;
+  }
+
+  .footer {
+    text-align: center;
+    padding: 14px 0 4px;
+    color: rgba(255,255,255,0.7);
+    font-size: 12px;
+  }
+
+  /* Decorative divider */
+  .divider {
+    text-align: center;
+    color: #FFD700;
+    font-size: 18px;
+    letter-spacing: 4px;
+    margin: 4px 0 16px;
+  }
+</style>
+</head>
+<body>
+<div class="page-wrap">
+
+  <div class="header">
+    <div class="header-flag">
+      <div class="flag-stripe saffron"></div>
+      <div class="flag-stripe white"></div>
+      <div class="flag-stripe green"></div>
+    </div>
+    <span class="rss-logo">🏆</span>
+    <h1>गोविंद बस्ती खेल प्रतियोगिता</h1>
+    <p class="subtitle">राष्ट्रीय स्वयंसेवक संघ — शताब्दी वर्ष<br>युवा शक्ति संगम 💐</p>
+    <span class="dates-badge">📅 रविवार 12 जुलाई 2026</span>
+  </div>
+
+  <div class="info-section">
+    <p class="info-text">
+      👉 सभी महानुभावों / स्वयंसेवकों को बड़े हर्ष के साथ सूचित किया जाता है कि राष्ट्रीय स्वयंसेवक संघ के शताब्दी वर्ष के कार्यक्रमों में <strong>युवा शक्ति संगम</strong> के अंतर्गत गोरधन बस्ती के युवाओं के खेल कार्यक्रम का <strong>भव्य आयोजन</strong> रहेगा। जो भी युवा, व्यक्ति, मातृशक्ति बहिनें, बिटियाएं, महिलाएं भाग लेना चाहती हैं वे सभी नीचे दिए फॉर्म में अपना <strong>पंजीकरण</strong> करवाएं। 🙏🙏
+    </p>
+    <div class="sports-chips">
+      <span class="chip">🤼 कबड्डी</span>
+<span class="chip">🥅 रिंग गोल</span>
+<span class="chip">🏃 खो-खो</span>
+<span class="chip">🎯 सतोलिया</span>
+<span class="chip">⬆️ ऊँची कूद</span>
+<span class="chip">🦘 लंबी कूद</span>
+<span class="chip">🤼 मर दड़ी</span>
+<span class="chip">🥄 चम्मच दौड़</span>
+<span class="chip">🪢 रस्सा-कस्सी</span>
+<span class="chip">🦵 तीन टांग दौड़</span>
+<span class="chip">🪑 कुर्सी दौड़</span>
+    </div>
+  </div>
+
+  <div class="form-card">
+    <div class="form-title">📋 पंजीकरण फॉर्म</div>
+    <div class="divider">✦ ✦ ✦</div>
+
+    <form id="regForm">
+      <div class="two-col">
+        <div class="form-group">
+          <label>खिलाड़ी का नाम <span class="req">*</span></label>
+          <input type="text" id="playerName" placeholder="पूरा नाम" required>
+        </div>
+        <div class="form-group">
+          <label>पिता का नाम <span class="req">*</span></label>
+          <input type="text" id="fatherName" placeholder="पिता का नाम" required>
+        </div>
+      </div>
+      <div class="form-group">
+          <label>मोबाइल नंबर <span class="req">*</span></label>
+          <input type="tel" id="mobile" placeholder="10 अंक" maxlength="10" required>
+        </div>
+      <div class="form-group">
+          <label>कक्षा <span class="req">*</span></label>
+          <input type="text" id="class" placeholder="कक्षा" required>
+        </div>
+      <div class="two-col">
+        <div class="form-group">
+        <label>लिंग<span class="req">*</span></label>
+        <select id="gender" required>
+          <option value="">— लिंग चुनें —</option>
+          <option value="Male">पुरुष</option>
+          <option value="Female">महिला</option>
+        </select>
+      </div>
+        <div class="form-group">
+          <label>उम्र <span class="req">*</span></label>
+          <input type="number" id="age" placeholder="वर्ष" min="5" max="80" required>
+        </div>
+        
+      </div>
+
+      <div class="form-group">
+        <label>पता <span class="req">*</span></label>
+        <input type="text" id="address" placeholder="अपना पूरा पता लिखें" required>
+      </div>
+
+      <div class="form-group">
+        <label>खेल का नाम <span class="req">*</span></label>
+        <select id="sport" required>
+          <option value="">— खेल चुनें —</option>
+<option>कबड्डी</option>
+<option>रिंग गोल</option>
+<option>खो-खो</option>
+<option>सतोलिया</option>
+<option>ऊँची कूद</option>
+<option>लंबी कूद</option>
+<option>मर दड़ी</option>
+<option>चम्मच दौड़</option>
+<option>रस्सा-कस्सी</option>
+<option>तीन टांग दौड़</option>
+<option>कुर्सी दौड़</option>
+          <option>अन्य</option>
+        </select>
+      </div>
+
+      <div class="form-group d-none">
+        <label>नगर <span class="req">*</span></label>
+        <select id="nagar" required>
+          <option value="">— नगर चुनें —</option>
+          <option value="Sitapura Nagar">सीतापुरा नगर</option>
+          <option value="Sanganer Nagar">सांगानेर नगर</option>
+          <option value="Pratap Nagar">प्रताप नगर</option>
+          <option value="Govind Nagar">गोविन्द नगर</option>
+        </select>
+      </div>
+
+      <div class="form-group d-none">
+        <label>शाखा का नाम <span class="req">*</span></label>
+        <select id="shakha" required disabled>
+          <option value="">— पहले नगर चुनें —</option>
+        </select>
+      </div>
+
+      <button type="submit" class="submit-btn" id="submitBtn">
+        🙏 पंजीकरण करें
+      </button>
+
+      <div class="result-msg" id="resultMsg"></div>
+    </form>
+  </div>
+
+  <div class="footer">
+    राष्ट्रीय स्वयंसेवक संघ — शताब्दी वर्ष 2025-26
+  </div>
+</div>
+
+<script>
+  // ⚠️  REPLACE THIS URL with your published Google Apps Script Web App URL
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzxhYBkXPfmZt-PkEWvHMaDNuSiubFkEUwEhg2cvzfwnoGTjWhy70rNVEzngMIE09DM/exec";
+
+  // ── Nagar → Shakha data ──────────────────────────────────────────────
+  const NAGAR_DATA = {
+    "Sitapura Nagar": {
+      label: "सीतापुरा नगर",
+      shakhas: [
+        { value: "अटल शाखा",          label: "अटल शाखा" },
+        { value: "गोवर्धन शाखा",       label: "गोवर्धन शाखा" },
+        { value: "बलराम शाखा",         label: "बलराम शाखा" },
+        { value: "बजरंग शाखा",         label: "बजरंग शाखा" },
+        { value: "श्री राम शाखा",      label: "श्री राम शाखा" },
+        { value: "सरल बिहारी शाखा",    label: "सरल बिहारी शाखा" },
+        { value: "श्री कल्याण शाखा",   label: "श्री कल्याण शाखा" },
+        { value: "गोविंद शाखा",        label: "गोविंद शाखा" },
+        { value: "राजगुरु शाखा",   label: "राजगुरु शाखा" },
+        { value: "गोकुल मिलन",         label: "गोकुल मिलन" },
+        { value: "गार्डन सिटी मिलन",   label: "गार्डन सिटी मिलन" },
+      ]
+    },
+    "Sanganer Nagar": {
+      label: "सांगानेर नगर",
+      shakhas: [
+        { value: "केशव शाखा",                             label: "केशव शाखा" },
+        { value: "श्री गुरु जी शाखा",                    label: "श्री गुरु जी शाखा" },
+        { value: "फतेह सिंह शाखा",                       label: "फतेह सिंह शाखा" },
+        { value: "शिवाजी शाखा",                          label: "शिवाजी शाखा" },
+        { value: "सांगा शाखा",                           label: "सांगा शाखा" },
+        { value: "अंबेडकर शाखा",                         label: "अंबेडकर शाखा" },
+        { value: "आजाद शाखा",                            label: "आजाद शाखा" },
+        { value: "बालाजी शाखा",                          label: "बालाजी शाखा" },
+        { value: "विनायक शाखा",                          label: "विनायक शाखा" },
+        { value: "सुभाष शाखा",                           label: "सुभाष शाखा" },
+        { value: "सुदर्शन शाखा",                         label: "सुदर्शन शाखा" },
+        { value: "रामदेव शाखा",                          label: "रामदेव शाखा" },
+        { value: "तेजाजी महाविद्यालय विद्यार्थी शाखा", label: "तेजाजी महाविद्यालय विद्यार्थी शाखा" },
+        { value: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन", label: "महर्षि वाल्मीकि महाविद्यालय विद्यार्थी मिलन" },
+        { value: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन",    label: "महर्षि विशेष महाविद्यालय विद्यार्थी मिलन" },
+        { value: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन",      label: "विश्वकर्मा महाविद्यालय विद्यार्थी मिलन" },
+        { value: "मारुति महाविद्यालय विद्यार्थी मिलन",          label: "मारुति महाविद्यालय विद्यार्थी मिलन" },
+        { value: "बालाजी महाविद्यालय विद्यार्थी मिलन",          label: "बालाजी महाविद्यालय विद्यार्थी मिलन" },
+      ]
+    },
+    "Pratap Nagar": {
+      label: "प्रताप नगर",
+      shakhas: [
+        { value: "अभिमन्यु तरुण व्यवसाई शाखा",       label: "अभिमन्यु तरुण व्यवसाई शाखा" },
+        { value: "महादेव मिलन सेक्टर 16",             label: "महादेव मिलन सेक्टर 16" },
+        { value: "सावरकर तरुण व्यवसाई शाखा",          label: "सावरकर तरुण व्यवसाई शाखा" },
+        { value: "विवेकानंद तरुण व्यवसाई शाखा",       label: "विवेकानंद तरुण व्यवसाई शाखा" },
+        { value: "175 ब्लॉक मिलन",                    label: "175 ब्लॉक मिलन" },
+        { value: "बालाजी प्रौढ़ शाखा",                label: "बालाजी प्रौढ़ शाखा" },
+        { value: "सरस्वती मिलन",                      label: "सरस्वती मिलन" },
+        { value: "आजाद तरुण व्यवसाई शाखा",            label: "आजाद तरुण व्यवसाई शाखा" },
+        { value: "आजाद प्रौढ़ शाखा",                  label: "आजाद प्रौढ़ शाखा" },
+        { value: "महाराणा प्रताप तरुण व्यवसाई शाखा", label: "महाराणा प्रताप तरुण व्यवसाई शाखा" },
+        { value: "शिवाजी तरुण व्यवसाई शाखा",         label: "शिवाजी तरुण व्यवसाई शाखा" },
+        { value: "चाणक्य तरुण व्यवसाई शाखा",          label: "चाणक्य तरुण व्यवसाई शाखा" },
+        { value: "शिक्षक प्रहरी मिलन",                label: "शिक्षक प्रहरी मिलन" },
+        { value: "महावीर तरुण व्यवसाई शाखा",          label: "महावीर तरुण व्यवसाई शाखा" },
+        { value: "प्रताप एनक्लेव मिलन",               label: "प्रताप एनक्लेव मिलन" },
+        { value: "श्री राम तरुण व्यवसाई शाखा",        label: "श्री राम तरुण व्यवसाई शाखा" },
+        { value: "तेजाजी तरुण व्यवसाई शाखा",          label: "तेजाजी तरुण व्यवसाई शाखा" },
+        { value: "कृष्णा तरुण व्यवसाई शाखा",          label: "कृष्णा तरुण व्यवसाई शाखा" },
+        { value: "चिनाव तरुण व्यवसाई शाखा",           label: "चिनाव तरुण व्यवसाई शाखा" },
+        { value: "बजरंग मिलन",                        label: "बजरंग मिलन" },
+        { value: "संभाजी मिलन",                       label: "संभाजी मिलन" },
+        { value: "शिवाजी मिलन",                       label: "शिवाजी मिलन" },
+        { value: "महाविद्यालय विद्यार्थी मिलन सेक्टर 19", label: "महाविद्यालय विद्यार्थी मिलन सेक्टर 19" },
+        { value: "महाविद्यालय विद्यार्थी मिलन सेक्टर 26", label: "महाविद्यालय विद्यार्थी मिलन सेक्टर 26" },
+        { value: "श्रीराम संयुक्त विद्यार्थी शाखा",   label: "श्रीराम संयुक्त विद्यार्थी शाखा" },
+        { value: "चाणक्य संयुक्त विद्यार्थी शाखा",    label: "चाणक्य संयुक्त विद्यार्थी शाखा" },
+        { value: "श्रीकृष्ण संयुक्त विद्यार्थी शाखा", label: "श्रीकृष्ण संयुक्त विद्यार्थी शाखा" },
+        { value: "अभिमन्यु संयुक्त विद्यार्थी शाखा",  label: "अभिमन्यु संयुक्त विद्यार्थी शाखा" },
+        { value: "लवकुश संयुक्त विद्यार्थी शाखा",     label: "लवकुश संयुक्त विद्यार्थी शाखा" },
+        { value: "आज़ाद संयुक्त विद्यार्थी शाखा",     label: "आज़ाद संयुक्त विद्यार्थी शाखा" },
+        { value: "प्रताप संयुक्त विद्यार्थी शाखा",    label: "प्रताप संयुक्त विद्यार्थी शाखा" },
+        { value: "बालाजी संयुक्त विद्यार्थी शाखा",    label: "बालाजी संयुक्त विद्यार्थी शाखा" },
+        { value: "शिव संयुक्त विद्यार्थी शाखा",       label: "शिव संयुक्त विद्यार्थी शाखा" },
+      ]
+    },
+    "Govind Nagar": {
+      label: "गोविन्द नगर",
+      shakhas: [
+        { value: "योगेश्वर",         label: "योगेश्वर (प्रभात शाखा)" },
+        { value: "विवेकानंद",        label: "विवेकानंद (प्रभात शाखा)" },
+        { value: "गोपेश्वर",         label: "गोपेश्वर (प्रभात शाखा)" },
+        { value: "बजरंग",            label: "बजरंग (प्रभात शाखा)" },
+        { value: "सूर्य",            label: "सूर्य (प्रभात शाखा)" },
+        { value: "नंद गांव",         label: "नंद गांव (प्रभात शाखा)" },
+        { value: "महाकालेश्वर",      label: "महाकालेश्वर (मिलन शाखा)" },
+        { value: "महावीर",           label: "महावीर (मिलन शाखा)" },
+        { value: "वैष्णव",           label: "वैष्णव (मिलन शाखा)" },
+        { value: "श्रीगुरुजी",       label: "श्रीगुरुजी (मिलन शाखा)" },
+        { value: "विजय",             label: "विजय (मिलन शाखा)" },
+        { value: "रामसिंह पूरा",     label: "रामसिंह पूरा (मिलन शाखा)" },
+        { value: "योगेश्वर सायं",    label: "योगेश्वर सायं (विद्यार्थी भाग)" },
+        { value: "अर्जुन",           label: "अर्जुन (विद्यार्थी भाग)" },
+        { value: "विवेकानंद सायं",   label: "विवेकानंद सायं (विद्यार्थी भाग)" },
+        { value: "गोपेश्वर सायं",    label: "गोपेश्वर सायं (विद्यार्थी भाग)" },
+        { value: "लक्ष्मण",          label: "लक्ष्मण (विद्यार्थी भाग)" },
+        { value: "चन्द्रगुप्त",      label: "चन्द्रगुप्त (विद्यार्थी भाग)" },
+        { value: "बजरंग सायं",       label: "बजरंग सायं (विद्यार्थी भाग)" },
+        { value: "श्रीगुरुजी सायं",  label: "श्रीगुरुजी सायं (विद्यार्थी भाग)" },
+        { value: "वैष्णव सायं",      label: "वैष्णव सायं (विद्यार्थी भाग)" },
+        { value: "श्री कृष्णा",      label: "श्री कृष्णा (विद्यार्थी भाग)" },
+        { value: "अम्बेडकर",         label: "अम्बेडकर (विद्यार्थी भाग)" },
+        { value: "भगतसिंह",          label: "भगतसिंह (महाविद्यालय शाखा)" },
+        { value: "सुखदेव",           label: "सुखदेव (महाविद्यालय शाखा)" },
+        { value: "गोविन्द",          label: "गोविन्द (महाविद्यालय शाखा)" },
+      ]
+    }
+  };
+
+  // ── Populate shakha when nagar changes ───────────────────────────────
+  document.getElementById('nagar').addEventListener('change', function() {
+    const shakhaEl = document.getElementById('shakha');
+    const key = this.value;
+    shakhaEl.innerHTML = '';
+
+    if (!key || !NAGAR_DATA[key]) {
+      shakhaEl.innerHTML = '<option value="">— पहले नगर चुनें —</option>';
+      shakhaEl.disabled = true;
+      return;
+    }
+
+    shakhaEl.disabled = false;
+    const placeholder = document.createElement('option');
+    placeholder.value = '';
+    placeholder.textContent = '— शाखा चुनें —';
+    shakhaEl.appendChild(placeholder);
+
+    NAGAR_DATA[key].shakhas.forEach(function(s) {
+      const opt = document.createElement('option');
+      opt.value = s.value;
+      opt.textContent = s.label;
+      shakhaEl.appendChild(opt);
+    });
+  });
+
+  document.getElementById('regForm').addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const btn = document.getElementById('submitBtn');
+    const msg = document.getElementById('resultMsg');
+
+    // Basic validation
+    const mobile = document.getElementById('mobile').value.trim();
+    if (!/^\d{10}$/.test(mobile)) {
+      showMsg('error', '⚠️ कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।');
+      return;
+    }
+
+    const data = {
+      timestamp: new Date().toLocaleString('hi-IN', {timeZone:'Asia/Kolkata'}),
+      playerName: document.getElementById('playerName').value.trim(),
+      fatherName: document.getElementById('fatherName').value.trim(),
+      age: document.getElementById('age').value,
+      class: document.getElementById('class').value,
+      gender: document.getElementById('gender').value,
+      address: document.getElementById('address').value.trim(),
+      sport: document.getElementById('sport').value,
+      mobile: mobile,
+      nagar: document.getElementById('nagar').value,
+      shakha: document.getElementById('shakha').value,
+    };
+
+    btn.disabled = true;
+    btn.textContent = '⏳ भेजा जा रहा है...';
+    msg.style.display = 'none';
+
+    try {
+      const resp = await fetch(SCRIPT_URL, {
+        method: 'POST',
+        mode: 'no-cors',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(data)
+      });
+
+      showMsg('success', '✅ आपका पंजीकरण सफलतापूर्वक हो गया!\n\nनाम: ' + data.playerName + '\nखेल: ' + data.sport + '\n\nधन्यवाद 🙏 भारत माता की जय! 🇮🇳');
+      document.getElementById('regForm').reset();
+    } catch (err) {
+      showMsg('error', '❌ नेटवर्क में समस्या आई। कृपया पुनः प्रयास करें।');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = '🙏 पंजीकरण करें';
+    }
+  });
+
+  function showMsg(type, text) {
+    const el = document.getElementById('resultMsg');
+    el.className = 'result-msg ' + type;
+    el.style.display = 'block';
+    el.style.whiteSpace = 'pre-line';
+    el.textContent = text;
+    el.scrollIntoView({behavior:'smooth', block:'center'});
+  }
+</script>
+</body>
+</html>
