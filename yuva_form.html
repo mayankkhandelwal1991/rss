@@ -64,9 +64,44 @@
     color:#C9D2E6;
   }
   .meta span{white-space:nowrap;}
+  .notice{
+    max-width:640px;
+    margin:-22px auto 20px;
+    background:#fff;
+    border-radius:4px;
+    box-shadow:0 20px 40px -18px rgba(22,35,63,.25);
+    padding:22px 24px 20px;
+  }
+  .notice-title{
+    font-weight:700;
+    font-size:16px;
+    margin-bottom:12px;
+    color:var(--navy);
+    display:flex;
+    align-items:center;
+    gap:8px;
+  }
+  .notice ul{
+    margin:0;
+    padding-left:20px;
+    font-size:14px;
+    line-height:1.75;
+    color:var(--navy);
+  }
+  .notice li{margin-bottom:4px;}
+  .notice li.deadline{
+    list-style:none;
+    margin:14px -24px -20px;
+    padding:12px 24px;
+    background:#FFF1EB;
+    color:var(--saffron-dark);
+    font-weight:700;
+    border-top:1px solid var(--line);
+    font-size:14px;
+  }
   form{
     max-width:640px;
-    margin:-22px auto 60px;
+    margin:0 auto 60px;
     background:#fff;
     border-radius:4px;
     box-shadow:0 20px 40px -18px rgba(22,35,63,.25);
@@ -106,11 +141,11 @@
   .hint{font-size:12px;color:var(--slate); font-weight:400; margin-top:-3px; margin-bottom:6px;}
   input[type=text], input[type=tel], input[type=number], textarea, select{
     width:100%;
-    padding:11px 12px;
+    padding:12px 12px;
     border:1.5px solid var(--line);
     border-radius:4px;
     font-family:inherit;
-    font-size:15px;
+    font-size:16px; /* 16px prevents iOS Safari from auto-zooming on focus */
     color:var(--navy);
     background:#fff;
     transition:border-color .15s;
@@ -212,9 +247,12 @@
   .status.err{color:var(--red);}
   .success-screen{
     max-width:640px;
-    margin:60px auto;
+    margin:-22px auto 60px;
     text-align:center;
-    padding:40px 24px;
+    padding:44px 28px;
+    background:#fff;
+    border-radius:4px;
+    box-shadow:0 20px 40px -18px rgba(22,35,63,.25);
   }
   .success-screen .badge{
     width:64px;height:64px;
@@ -225,6 +263,31 @@
     margin:0 auto 18px;
     font-size:30px;
   }
+  .success-screen h2{
+    font-size:22px;
+    margin:0 0 14px;
+    color:var(--navy);
+  }
+  .success-screen p{
+    font-size:15px;
+    line-height:1.7;
+    color:var(--navy);
+    margin:0 0 10px;
+  }
+  .success-screen .sign-off{
+    margin-top:26px;
+    padding-top:20px;
+    border-top:1px solid var(--line);
+    font-weight:700;
+    color:var(--navy);
+  }
+  .success-screen .sign-off .sub{
+    font-weight:500;
+    font-size:13px;
+    color:var(--slate);
+    display:block;
+    margin-top:4px;
+  }
   footer{
     text-align:center;
     font-size:12px;
@@ -232,8 +295,26 @@
     padding-bottom:40px;
   }
   @media (max-width:480px){
+    header{padding:28px 16px 40px;}
     header h1{font-size:24px;}
-    .section{padding:22px 18px 6px;}
+    header .hi-title{font-size:17px;}
+    .meta{gap:10px 16px; font-size:13px;}
+    .meta span{white-space:normal;}
+    .notice, form, .success-screen{
+      margin-left:12px;
+      margin-right:12px;
+      width:auto;
+    }
+    .notice{padding:18px 16px 16px;}
+    .notice li.deadline{margin:14px -16px -16px; padding:12px 16px;}
+    .section{padding:20px 16px 4px;}
+    .section-title{font-size:16px;}
+    .reg-type{flex-direction:column;}
+    .choice-group label.pill{font-size:13px; padding:9px 12px;}
+    .submit-bar{padding:20px 16px 28px;}
+  }
+  @media (max-width:360px){
+    header h1{font-size:21px;}
   }
 </style>
 </head>
@@ -250,6 +331,18 @@
     <span>📍 PIET Ground, सीतापुरा नगर</span>
   </div>
 </header>
+
+<div class="notice">
+  <div class="notice-title">📢 महत्वपूर्ण सूचना</div>
+  <ul>
+    <li>टीम प्रतियोगिताओं के लिए प्रत्येक टीम में 10 खिलाड़ी होना अनिवार्य है।</li>
+    <li>रजिस्ट्रेशन शुल्क ₹50 प्रति खिलाड़ी है।</li>
+    <li>टीम पंजीकरण शुल्क ₹500 (10 खिलाड़ी)।</li>
+    <li>व्यक्तिगत (Single) पंजीकरण शुल्क ₹50 प्रति खिलाड़ी।</li>
+    <li>एडवेंचर गेम के लिए अलग से पंजीकरण नहीं होगा। सभी पंजीकृत प्रतिभागी सामूहिक रूप से एडवेंचर गेम में भाग लेंगे।</li>
+    <li class="deadline">⏰ अंतिम तिथि : 18 जुलाई 2026</li>
+  </ul>
+</div>
 
 <form id="regForm">
 
@@ -374,7 +467,7 @@
   <div class="section">
     <label class="pill" style="display:flex; width:100%; align-items:flex-start; border-radius:8px; font-weight:500;">
       <input type="checkbox" required style="margin-top:3px;">
-      <span style="margin-left:8px;">मैं घोषणा करता/करती हूँ कि दी गई सभी जानकारी सही है और रजिस्ट्रेशन शुल्क जमा कर चुके हैं।</span>
+      <span style="margin-left:8px;">मैं घोषणा करता/करती हूँ कि मेरे द्वारा दी गई सभी जानकारी सही है। मैं/हम प्रतियोगिता के सभी नियमों का पालन करेंगे तथा रजिस्ट्रेशन शुल्क जमा कर चुके हैं।</span>
     </label>
   </div>
 
@@ -383,6 +476,20 @@
     <div class="status" id="statusMsg"></div>
   </div>
 </form>
+
+<div class="success-screen hidden" id="successScreen">
+  <div class="badge">✓</div>
+  <h2>🏁 पंजीकरण पूर्ण हुआ!</h2>
+  <p>आपका पंजीकरण सफलतापूर्वक प्राप्त हो गया है।</p>
+  <p>भुगतान सत्यापित होने के बाद आपका पंजीकरण स्वीकृत माना जाएगा।</p>
+  <p>मैच का समय, फिक्स्चर एवं अन्य महत्वपूर्ण जानकारी आपके WhatsApp नंबर पर भेजी जाएगी।</p>
+  <p style="font-weight:700;">धन्यवाद!</p>
+  <div class="sign-off">
+    YUVA 2026
+    <span class="sub">Youth United for Vision and Action</span>
+    <span class="sub">युवा खेल संगम 2026 आयोजन समिति</span>
+  </div>
+</div>
 
 <footer>YUVA 2026 आयोजन समिति · युवा खेल संगम 2026</footer>
 
@@ -487,13 +594,9 @@ document.getElementById('regForm').addEventListener('submit', async function(e) 
     const result = await res.json();
 
     if (result.result === 'success') {
-      statusMsg.textContent = '✅ पंजीकरण सफलतापूर्वक प्राप्त हो गया है। धन्यवाद!';
-      statusMsg.className = 'status ok';
-      form.reset();
-      teamSection.classList.add('hidden');
-      individualSection.classList.add('hidden');
-      fileDrop.textContent = '📎 स्क्रीनशॉट चुनने के लिए क्लिक करें';
-      fileDrop.classList.remove('has-file');
+      form.classList.add('hidden');
+      document.getElementById('successScreen').classList.remove('hidden');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     } else {
       throw new Error(result.error || 'Unknown error');
     }
