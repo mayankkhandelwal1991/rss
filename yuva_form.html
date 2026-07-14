@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html lang="hi">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>YUVA 2026 — पंजीकरण फॉर्म</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600;700&family=Hind+Siliguri:wght@600;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --navy:#16233F;
+    --navy-2:#1F3358;
+    --saffron:#FF6A3D;
+    --saffron-dark:#E24E1F;
+    --cream:#FBF8F3;
+    --line:#E4DED2;
+    --slate:#5B6B85;
+    --green:#2E9E6C;
+    --red:#D14343;
+  }
+  *{box-sizing:border-box;}
+  body{
+    margin:0;
+    background:var(--cream);
+    font-family:'Hind',sans-serif;
+    color:var(--navy);
+  }
+  .track{
+    height:10px;
+    background:repeating-linear-gradient(90deg, var(--saffron) 0 28px, transparent 28px 40px);
+    opacity:.9;
+  }
+  header{
+    background:var(--navy);
+    color:#fff;
+    padding:36px 20px 44px;
+    text-align:center;
+    position:relative;
+  }
+  header .eyebrow{
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--saffron);
+    font-weight:600;
+  }
+  header h1{
+    font-size:32px;
+    margin:8px 0 4px;
+    font-weight:700;
+  }
+  header .hi-title{
+    font-size:20px;
+    color:#DCE3F0;
+    font-weight:500;
+  }
+  .meta{
+    display:flex;
+    justify-content:center;
+    gap:24px;
+    flex-wrap:wrap;
+    margin-top:18px;
+    font-size:14px;
+    color:#C9D2E6;
+  }
+  .meta span{white-space:nowrap;}
+  form{
+    max-width:640px;
+    margin:-22px auto 60px;
+    background:#fff;
+    border-radius:4px;
+    box-shadow:0 20px 40px -18px rgba(22,35,63,.25);
+    overflow:hidden;
+  }
+  .section{
+    padding:28px 28px 8px;
+    border-bottom:1px solid var(--line);
+  }
+  .section:last-of-type{border-bottom:none;}
+  .section-title{
+    display:flex;
+    align-items:center;
+    gap:10px;
+    font-weight:700;
+    font-size:18px;
+    color:var(--navy);
+    margin-bottom:18px;
+  }
+  .lane-number{
+    width:26px;height:26px;
+    border-radius:50%;
+    background:var(--saffron);
+    color:#fff;
+    font-size:13px;
+    display:flex;align-items:center;justify-content:center;
+    flex-shrink:0;
+  }
+  label{
+    display:block;
+    font-weight:600;
+    font-size:14px;
+    margin:16px 0 6px;
+    color:var(--navy);
+  }
+  label .req{color:var(--red); margin-left:2px;}
+  .hint{font-size:12px;color:var(--slate); font-weight:400; margin-top:-3px; margin-bottom:6px;}
+  input[type=text], input[type=tel], input[type=number], textarea, select{
+    width:100%;
+    padding:11px 12px;
+    border:1.5px solid var(--line);
+    border-radius:4px;
+    font-family:inherit;
+    font-size:15px;
+    color:var(--navy);
+    background:#fff;
+    transition:border-color .15s;
+  }
+  input:focus, textarea:focus, select:focus{
+    outline:none;
+    border-color:var(--saffron);
+  }
+  textarea{min-height:90px; resize:vertical;}
+  .choice-group{
+    display:flex;
+    flex-wrap:wrap;
+    gap:8px;
+  }
+  .choice-group label.pill{
+    display:flex;
+    align-items:center;
+    gap:6px;
+    font-weight:500;
+    font-size:14px;
+    padding:9px 14px;
+    border:1.5px solid var(--line);
+    border-radius:999px;
+    margin:0;
+    cursor:pointer;
+    user-select:none;
+  }
+  .choice-group input{width:auto; accent-color:var(--saffron);}
+  .choice-group label.pill:has(input:checked){
+    border-color:var(--saffron);
+    background:#FFF1EB;
+  }
+  .reg-type{
+    display:flex;
+    gap:12px;
+  }
+  .reg-type .card{
+    flex:1;
+    border:2px solid var(--line);
+    border-radius:8px;
+    padding:18px 14px;
+    text-align:center;
+    cursor:pointer;
+    font-weight:600;
+  }
+  .reg-type .card:has(input:checked){
+    border-color:var(--saffron);
+    background:#FFF1EB;
+    color:var(--saffron-dark);
+  }
+  .reg-type input{position:absolute; opacity:0; pointer-events:none;}
+  .fee-note{
+    background:#F3F7F4;
+    border-left:3px solid var(--green);
+    padding:10px 14px;
+    font-size:14px;
+    font-weight:600;
+    color:#1F6E4C;
+    border-radius:2px;
+    margin:14px 0;
+  }
+  .file-drop{
+    border:1.5px dashed var(--line);
+    border-radius:6px;
+    padding:18px;
+    text-align:center;
+    font-size:14px;
+    color:var(--slate);
+    cursor:pointer;
+    margin-top:6px;
+  }
+  .file-drop.has-file{border-color:var(--green); color:var(--green); font-weight:600;}
+  .hidden{display:none !important;}
+  .submit-bar{
+    padding:24px 28px 32px;
+  }
+  button[type=submit]{
+    width:100%;
+    background:var(--saffron);
+    color:#fff;
+    border:none;
+    padding:15px;
+    font-size:16px;
+    font-weight:700;
+    border-radius:6px;
+    cursor:pointer;
+    font-family:inherit;
+    letter-spacing:.02em;
+  }
+  button[type=submit]:disabled{background:#F0B8A2; cursor:not-allowed;}
+  button[type=submit]:hover:not(:disabled){background:var(--saffron-dark);}
+  .status{
+    margin-top:14px;
+    font-size:14px;
+    text-align:center;
+    font-weight:600;
+  }
+  .status.ok{color:var(--green);}
+  .status.err{color:var(--red);}
+  .success-screen{
+    max-width:640px;
+    margin:60px auto;
+    text-align:center;
+    padding:40px 24px;
+  }
+  .success-screen .badge{
+    width:64px;height:64px;
+    border-radius:50%;
+    background:var(--green);
+    color:#fff;
+    display:flex;align-items:center;justify-content:center;
+    margin:0 auto 18px;
+    font-size:30px;
+  }
+  footer{
+    text-align:center;
+    font-size:12px;
+    color:var(--slate);
+    padding-bottom:40px;
+  }
+  @media (max-width:480px){
+    header h1{font-size:24px;}
+    .section{padding:22px 18px 6px;}
+  }
+</style>
+</head>
+<body>
+
+<div class="track"></div>
+<header>
+  <div class="eyebrow">Youth United for Vision and Action</div>
+  <h1>YUVA 2026</h1>
+  <div class="hi-title">युवा खेल संगम 2026 — ऑनलाइन पंजीकरण फॉर्म</div>
+  <div class="meta">
+    <span>📅 19 जुलाई 2026</span>
+    <span>🕓 4:00 – 7:30 सायं</span>
+    <span>📍 PIET Ground, सीतापुरा नगर</span>
+  </div>
+</header>
+
+<form id="regForm">
+
+  <div class="section">
+    <div class="section-title"><span class="lane-number">1</span>पंजीकरण का प्रकार</div>
+    <div class="reg-type">
+      <label class="card">
+        <input type="radio" name="registrationType" value="team" required>
+        टीम पंजीकरण<br><span style="font-weight:400;font-size:12px;">(10 खिलाड़ी)</span>
+      </label>
+      <label class="card">
+        <input type="radio" name="registrationType" value="individual" required>
+        व्यक्तिगत पंजीकरण<br><span style="font-weight:400;font-size:12px;">(Single)</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- TEAM SECTION -->
+  <div class="section hidden" id="teamSection">
+    <div class="section-title"><span class="lane-number">2</span>टीम पंजीकरण विवरण</div>
+
+    <label>टीम का नाम<span class="req">*</span></label>
+    <input type="text" name="teamName">
+
+    <label>टीम का प्रकार<span class="req">*</span></label>
+    <div class="choice-group">
+      <label class="pill"><input type="radio" name="teamCategory" value="बालक (BOYS)">बालक (BOYS)</label>
+      <label class="pill"><input type="radio" name="teamCategory" value="बालिकाएं (GIRLS)">बालिकाएं (GIRLS)</label>
+    </div>
+
+    <label>संस्था / कॉलेज / गाँव / क्षेत्र<span class="req">*</span></label>
+    <input type="text" name="institutionTeam">
+
+    <label>टीम कप्तान का नाम<span class="req">*</span></label>
+    <input type="text" name="captainName">
+
+    <label>मोबाइल नंबर<span class="req">*</span></label>
+    <input type="tel" name="mobileTeam" pattern="[0-9]{10}" maxlength="10" placeholder="10 अंकों का नंबर">
+
+    <label>WhatsApp नंबर<span class="req">*</span></label>
+    <input type="tel" name="whatsappTeam" pattern="[0-9]{10}" maxlength="10">
+
+    <label>भाग लेने वाली प्रतियोगिता<span class="req">*</span> <span class="hint">(एक या अधिक चुनें)</span></label>
+    <div class="choice-group">
+      <label class="pill"><input type="checkbox" name="events" value="कबड्डी">कबड्डी</label>
+      <label class="pill"><input type="checkbox" name="events" value="खो-खो">खो-खो</label>
+      <label class="pill"><input type="checkbox" name="events" value="वॉलीबॉल">वॉलीबॉल</label>
+      <label class="pill"><input type="checkbox" name="events" value="रस्साकशी">रस्साकशी</label>
+      <label class="pill"><input type="checkbox" name="events" value="सर्कल डॉज-बॉल">सर्कल डॉज-बॉल</label>
+      <label class="pill"><input type="checkbox" name="events" value="दण्ड खींच">दण्ड खींच</label>
+      <label class="pill"><input type="checkbox" name="events" value="रिले रेस">रिले रेस</label>
+    </div>
+
+    <label>सभी 10 खिलाड़ियों के नाम<span class="req">*</span></label>
+    <div class="hint">प्रत्येक खिलाड़ी का नाम अलग-अलग पंक्ति में लिखें</div>
+    <textarea name="playerNames"></textarea>
+
+    <div class="fee-note">रजिस्ट्रेशन शुल्क: ₹500 (₹50 × 10 खिलाड़ी)</div>
+  </div>
+
+  <!-- INDIVIDUAL SECTION -->
+  <div class="section hidden" id="individualSection">
+    <div class="section-title"><span class="lane-number">2</span>व्यक्तिगत पंजीकरण विवरण</div>
+
+    <label>प्रतिभागी का नाम<span class="req">*</span></label>
+    <input type="text" name="participantName">
+
+    <label>आयु<span class="req">*</span></label>
+    <input type="number" name="age" min="1" max="99">
+
+    <label>टीम का प्रकार</label>
+    <div class="choice-group">
+      <label class="pill"><input type="radio" name="individualCategory" value="बालक (BOYS)">बालक (BOYS)</label>
+      <label class="pill"><input type="radio" name="individualCategory" value="बालिकाएं (GIRLS)">बालिकाएं (GIRLS)</label>
+    </div>
+
+    <label>मोबाइल नंबर<span class="req">*</span></label>
+    <input type="tel" name="mobileIndividual" pattern="[0-9]{10}" maxlength="10">
+
+    <label>WhatsApp नंबर<span class="req">*</span></label>
+    <input type="tel" name="whatsappIndividual" pattern="[0-9]{10}" maxlength="10">
+
+    <label>संस्था / कॉलेज / गाँव<span class="req">*</span></label>
+    <input type="text" name="institutionIndividual">
+
+    <label>भाग लेने वाली प्रतियोगिता<span class="req">*</span></label>
+    <div class="choice-group">
+      <label class="pill"><input type="checkbox" name="eventsIndividual" value="हाई जंप">हाई जंप — ₹50</label>
+      <label class="pill"><input type="checkbox" name="eventsIndividual" value="लॉन्ग जंप">लॉन्ग जंप — ₹50</label>
+      <label class="pill"><input type="checkbox" name="eventsIndividual" value="चम्मच दौड़">चम्मच दौड़ — ₹50</label>
+      <label class="pill"><input type="checkbox" name="eventsIndividual" value="तीन टांग दौड़" id="teenTaangCheck">तीन टांग दौड़ (2 खिलाड़ी) — ₹100</label>
+    </div>
+
+    <div id="teenTaangFields" class="hidden">
+      <label>खिलाड़ी 1 का नाम<span class="req">*</span></label>
+      <input type="text" name="player1">
+      <label>खिलाड़ी 2 का नाम<span class="req">*</span></label>
+      <input type="text" name="player2">
+    </div>
+  </div>
+
+  <!-- PAYMENT (shared) -->
+  <div class="section" id="paymentSection">
+    <div class="section-title"><span class="lane-number">3</span>भुगतान विवरण</div>
+
+    <label>भुगतान का माध्यम<span class="req">*</span></label>
+    <div class="choice-group">
+      <label class="pill"><input type="radio" name="paymentMethod" value="UPI">UPI</label>
+      <label class="pill"><input type="radio" name="paymentMethod" value="PhonePe">PhonePe</label>
+      <label class="pill"><input type="radio" name="paymentMethod" value="Google Pay">Google Pay</label>
+      <label class="pill"><input type="radio" name="paymentMethod" value="Paytm">Paytm</label>
+    </div>
+
+    <label>UTR / Transaction ID<span class="req">*</span></label>
+    <input type="text" name="utr">
+
+    <label>भुगतान का स्क्रीनशॉट अपलोड करें<span class="req">*</span></label>
+    <div class="file-drop" id="fileDrop">📎 स्क्रीनशॉट चुनने के लिए क्लिक करें</div>
+    <input type="file" name="screenshot" id="screenshotInput" accept="image/*" class="hidden">
+  </div>
+
+  <div class="section">
+    <label class="pill" style="display:flex; width:100%; align-items:flex-start; border-radius:8px; font-weight:500;">
+      <input type="checkbox" required style="margin-top:3px;">
+      <span style="margin-left:8px;">मैं घोषणा करता/करती हूँ कि दी गई सभी जानकारी सही है और रजिस्ट्रेशन शुल्क जमा कर चुके हैं।</span>
+    </label>
+  </div>
+
+  <div class="submit-bar">
+    <button type="submit" id="submitBtn">पंजीकरण पूर्ण करें</button>
+    <div class="status" id="statusMsg"></div>
+  </div>
+</form>
+
+<footer>YUVA 2026 आयोजन समिति · युवा खेल संगम 2026</footer>
+
+<script>
+// ⚠️ Replace with your deployed Apps Script Web App URL (ends in /exec)
+const SCRIPT_URL = "PASTE_YOUR_APPS_SCRIPT_WEB_APP_URL_HERE";
+
+const teamSection = document.getElementById('teamSection');
+const individualSection = document.getElementById('individualSection');
+document.querySelectorAll('input[name="registrationType"]').forEach(r => {
+  r.addEventListener('change', () => {
+    if (r.value === 'team' && r.checked) {
+      teamSection.classList.remove('hidden');
+      individualSection.classList.add('hidden');
+    } else if (r.value === 'individual' && r.checked) {
+      individualSection.classList.remove('hidden');
+      teamSection.classList.add('hidden');
+    }
+  });
+});
+
+const teenTaangCheck = document.getElementById('teenTaangCheck');
+const teenTaangFields = document.getElementById('teenTaangFields');
+teenTaangCheck.addEventListener('change', () => {
+  teenTaangFields.classList.toggle('hidden', !teenTaangCheck.checked);
+});
+
+const fileDrop = document.getElementById('fileDrop');
+const screenshotInput = document.getElementById('screenshotInput');
+fileDrop.addEventListener('click', () => screenshotInput.click());
+screenshotInput.addEventListener('change', () => {
+  if (screenshotInput.files.length) {
+    fileDrop.textContent = '✅ ' + screenshotInput.files[0].name;
+    fileDrop.classList.add('has-file');
+  }
+});
+
+function fileToBase64(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.onerror = reject;
+    reader.readAsDataURL(file);
+  });
+}
+
+document.getElementById('regForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const submitBtn = document.getElementById('submitBtn');
+  const statusMsg = document.getElementById('statusMsg');
+  statusMsg.textContent = '';
+  statusMsg.className = 'status';
+
+  const form = e.target;
+  const regType = form.registrationType.value;
+  const file = screenshotInput.files[0];
+
+  if (!file) {
+    statusMsg.textContent = 'कृपया भुगतान का स्क्रीनशॉट अपलोड करें।';
+    statusMsg.className = 'status err';
+    return;
+  }
+
+  submitBtn.disabled = true;
+  submitBtn.textContent = 'भेजा जा रहा है...';
+
+  try {
+    const base64 = await fileToBase64(file);
+
+    const events = Array.from(form.querySelectorAll('input[name="events"]:checked')).map(i => i.value);
+    const eventsIndividual = Array.from(form.querySelectorAll('input[name="eventsIndividual"]:checked')).map(i => i.value);
+
+    const payload = {
+      registrationType: regType,
+      teamName: form.teamName.value,
+      teamCategory: form.teamCategory ? (document.querySelector('input[name="teamCategory"]:checked')||{}).value : '',
+      institution: regType === 'team' ? form.institutionTeam.value : form.institutionIndividual.value,
+      captainName: form.captainName.value,
+      mobile: regType === 'team' ? form.mobileTeam.value : form.mobileIndividual.value,
+      whatsapp: regType === 'team' ? form.whatsappTeam.value : form.whatsappIndividual.value,
+      events: regType === 'team' ? events : eventsIndividual,
+      playerNames: form.playerNames.value,
+      participantName: form.participantName.value,
+      age: form.age.value,
+      player1: form.player1 ? form.player1.value : '',
+      player2: form.player2 ? form.player2.value : '',
+      paymentMethod: (document.querySelector('input[name="paymentMethod"]:checked')||{}).value || '',
+      utr: form.utr.value,
+      image: {
+        base64: base64,
+        mimeType: file.type,
+        fileName: file.name
+      }
+    };
+
+    // text/plain avoids a CORS preflight that Apps Script web apps don't handle well
+    const res = await fetch(SCRIPT_URL, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    const result = await res.json();
+
+    if (result.result === 'success') {
+      statusMsg.textContent = '✅ पंजीकरण सफलतापूर्वक प्राप्त हो गया है। धन्यवाद!';
+      statusMsg.className = 'status ok';
+      form.reset();
+      teamSection.classList.add('hidden');
+      individualSection.classList.add('hidden');
+      fileDrop.textContent = '📎 स्क्रीनशॉट चुनने के लिए क्लिक करें';
+      fileDrop.classList.remove('has-file');
+    } else {
+      throw new Error(result.error || 'Unknown error');
+    }
+  } catch (err) {
+    statusMsg.textContent = '❌ त्रुटि हुई, कृपया पुनः प्रयास करें। (' + err.message + ')';
+    statusMsg.className = 'status err';
+  } finally {
+    submitBtn.disabled = false;
+    submitBtn.textContent = 'पंजीकरण पूर्ण करें';
+  }
+});
+</script>
+
+</body>
+</html>
